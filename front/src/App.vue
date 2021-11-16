@@ -10,8 +10,8 @@
         <!-- router-link가 a태그 기능은 아니니까 넣어주는 거지.. -->
       </span>
       <span v-else>
-        <router-link :to="{ name: 'signup' }">Signup</router-link> |
-        <router-link :to="{ name: 'login' }">Login</router-link> 
+        <router-link :to="{ name: 'Signup' }">Signup</router-link> |
+        <router-link :to="{ name: 'Login' }">Login</router-link> 
       </span>
     </div>
     <!-- 로그인이 되었을 때 물리적인 렌더링도 변경 -->

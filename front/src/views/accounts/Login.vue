@@ -41,7 +41,7 @@ export default {
         url: 'http://127.0.0.1:8000/accounts/api-token-auth/',
         data: this.credentials
       })
-        .then(() => {
+        .then(res => {
           localStorage.setItem('jwt', res.data.token)
           this.$emit('login')
           this.$router.push({ name: 'TodoList' })
