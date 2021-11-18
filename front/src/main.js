@@ -1,9 +1,18 @@
+import 'mdb-vue-ui-kit/css/mdb.min.css'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'mdb-vue-ui-kit/css/mdb.min.css';
+import Carousel3d from 'vue-carousel-3d';
+
 
 Vue.config.productionTip = false
+Vue.use(BootstrapVue)
+Vue.use(Carousel3d);
 
 new Vue({
   router,
