@@ -1,14 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/views/community/Home.vue'
-import Signup from '@/views/accounts/Signup.vue'
-import Login from '@/views/accounts/Login.vue'
+import Home from '../views/main/Home.vue'
+import Signup from '../views/accounts/Signup.vue'
+import Login from '../views/accounts/Login.vue'
+import Profile from '../views/accounts/Profile.vue'
+import Movielist from '../views/movies/Movielist.vue'
+import Moviedetail from '../views/movies/Moviedetail.vue'
+import Moviecommunity from '../views/movies/Moviecommunity.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/community/home',
+    path: '',
     name: 'Home',
     component: Home,
   },
@@ -21,6 +25,26 @@ const routes = [
     path: '/accounts/login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/accounts/profile',
+    name: 'Profile',
+    component: Profile
+  },
+  {
+    path: '/movies/Movielist',
+    name: 'Movielist',
+    component: Movielist
+  },
+  {
+    path: '/movies/Moviedetail',
+    name: 'Moviedetail',
+    component: Moviedetail
+  },
+  {
+    path: '/movies/Moviecommunity',
+    name: 'Moviecommunity',
+    component: Moviecommunity
   },
 ]
 

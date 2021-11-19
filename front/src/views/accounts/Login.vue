@@ -1,24 +1,29 @@
 <template>
-  <div>
-    <h1>Login</h1>
-    <div>
-      <label for="username">사용자 이름: </label>
-      <input
-       type="text" 
-       id="username"
-       v-model="credentials.username"
-       >
-    </div>
-    <div>
-      <label for="password">비밀번호: </label>
-      <input
-       type="password" 
-       id="password"
-       v-model="credentials.password"
-       >
-    </div>
-    <button @click="login">Login</button>
-  </div>
+  <section>
+			<div class="container">
+				<div class="logindiv center-block mt40">
+					<h3>로그인</h3>
+					<form name="loginform" id="loginform">
+						<div class="login-info-div">
+							<input type="text" name="id" id="username" v-model="credentials.username" placeholder="아이디 입력" >
+						</div>
+						<div class="login-info-div">
+							<input type="password" id="password" v-model="credentials.password" name="pw" placeholder="비밀번호 입력">
+						</div>
+						<div class="login-submit-div mt40">
+							<a @click="login" id="login-btn" class="pointer">로그인</a>
+						</div>
+					</form>
+					<div class="mt10 small-join">
+						<span> 계정이 없다면? <router-link :to="{ name: 'Signup' }">가입하러가기</router-link></span>
+					</div>
+					<div class="the_line"></div>
+					<div class="mt10 small-join">
+						<span><a href="#">비밀번호를 찾고 계신가요?</a></span>
+					</div>
+				</div>
+			</div>
+		</section>
 </template>
 
 <script>
@@ -41,10 +46,10 @@ export default {
         url: 'http://127.0.0.1:8000/accounts/api-token-auth/',
         data: this.credentials
       })
-        .then((res) => {
+        .then(res => {
           localStorage.setItem('jwt', res.data.token)
           this.$emit('login')
-          this.$router.push({ name: 'TodoList' })
+          this.$router.push({ name: 'Home' })
         })
         .catch(err => {
           console.log(err)

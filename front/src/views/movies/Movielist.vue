@@ -1,183 +1,198 @@
 <template>
-  <div id="app">
-    <div >
-      <b-navbar toggleable="lg" type="dark" variant="dark">
-        <b-navbar-nav>
-          <b-nav-item :to="{ name: 'Home' }"><span style="color: rgba(140, 100, 172);">Traveler</span> <span style="color: rgba(100, 240, 160);"> In</span> Movies</b-nav-item>
-        </b-navbar-nav>
-          <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto">
-                <b-nav-item-dropdown text="Search" right>
-                  <b-dropdown-item href="#">All</b-dropdown-item>
-                  <b-dropdown-item href="#">Location</b-dropdown-item>
-                  <b-dropdown-item href="#">Recommend</b-dropdown-item>
-                  <b-dropdown-item href="#">Genre</b-dropdown-item>
-                </b-nav-item-dropdown>
-                <b-nav-item-dropdown text="Account" right>
-                  <span v-if="isLogin">
-                    <b-dropdown-item :to="{ name: 'Profile' }">Profile</b-dropdown-item>
-                    <b-dropdown-item @click.native="logout" to="#">Logout</b-dropdown-item>
-                  </span>
-                  <span v-else>
-                    <b-dropdown-item :to="{ name: 'Signup' }">Signup</b-dropdown-item>
-                    <b-dropdown-item :to="{ name: 'Login' }">Login</b-dropdown-item>
-                  </span>
-                </b-nav-item-dropdown>
-                <b-nav-item-dropdown text="Movies" right>
-                  <b-dropdown-item :to="{ name: 'Movielist' }">Movielist</b-dropdown-item>
-                </b-nav-item-dropdown>
-          </b-navbar-nav>
-      </b-navbar>
-    </div>
+    <section>
+			<div class="container">
+				<div class="categorydiv">
+					<div>
+						<a href="">
+							<span class="category-part">
+								<span class="category-1"></span>
+								<span>전체보기</span>
+							</span>
+						</a>
+						<a href="">
+							<span class="category-part">
+								<span class="category-1"></span>
+								<span>액션</span>
+							</span>
+						</a>
+						<a href="">
+							<span class="category-part">
+								<span class="category-1"></span>
+								<span>판타지</span>
+							</span>
+						</a>
+						<a href="">
+							<span class="category-part">
+								<span class="category-1"></span>
+								<span>애니메이션</span>
+							</span>
+						</a>
+						<a href="">
+							<span class="category-part">
+								<span class="category-1"></span>
+								<span>드라마</span>
+							</span>
+						</a>
+						<a href="">
+							<span class="category-part">
+								<span class="category-1"></span>
+								<span>공포</span>
+							</span>
+						</a>
+						<a href="project-release.html">
+							<span class="category-part">
+								<span class="category-1"></span>
+								<span>코미디</span>
+							</span>
+						</a>
+					</div>
+				</div>
+				<div class="listifodiv">
+					<div class="pull-left">
+						<p class="procount"><span>1,234</span>개의 영화가 있습니다.</p>
+					</div>
+					<div class="pull-right">
+						<div class="dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+								평점순 <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu"
+								aria-labelledby="dropdownMenu1">
+								<li role="presentation"><a role="menuitem" tabindex="-1" href="#">평점순</a></li>
+								<li role="presentation"><a role="menuitem" tabindex="-1" href="#">개봉일순</a></li>
+								<!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="#">최다 금액순</a></li>
+								<li role="presentation"><a role="menuitem" tabindex="-1" href="#">마감 임박순</a></li> -->
+							</ul>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="listdiv">
+					<div class="row">
 
-    <!-- 로그인이 되었을 때 물리적인 렌더링도 변경 -->
-    <router-view @login="isLogin=true"/>
-  </div>
-</template>
+						<div class="col-md-4 project-item">
+							<div class="item-h">
+								<div class="project-card">
+									<div class="item-heart pointer">
+										<button type="button" class="heart-btn"></button>
+									</div>
+                  <router-link :to="{ name: 'Moviedetail' }">
+									<div class="item-image" style="height:100%;">
+										<a href="#">
+											<img src="../../assets/nar.jpg">
+										</a>
+									</div>
+                  </router-link>
+									<div class="item-moneybar"></div>
+									<div class="item-funddingstat" style="height:60px;">
+										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
+										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
+            <div class="col-md-4 project-item">
+							<div class="item-h">
+								<div class="project-card">
+									<div class="item-heart pointer">
+										<button type="button" class="heart-btn"></button>
+									</div>
+									<div class="item-image" style="height:100%;">
+										<a href="#">
+											<img src="../../assets/nar.jpg">
+										</a>
+									</div>
+									<div class="item-moneybar"></div>
+									<div class="item-funddingstat" style="height:60px;">
+										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
+										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 project-item">
+							<div class="item-h">
+								<div class="project-card">
+									<div class="item-heart pointer">
+										<button type="button" class="heart-btn"></button>
+									</div>
+									<div class="item-image" style="height:100%;">
+										<a href="#">
+											<img src="../../assets/nar.jpg">
+										</a>
+									</div>
+									<div class="item-moneybar"></div>
+									<div class="item-funddingstat" style="height:60px;">
+										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
+										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 project-item">
+							<div class="item-h">
+								<div class="project-card">
+									<div class="item-heart pointer">
+										<button type="button" class="heart-btn"></button>
+									</div>
+									<div class="item-image" style="height:100%;">
+										<a href="#">
+											<img src="../../assets/nar.jpg">
+										</a>
+									</div>
+									<div class="item-moneybar"></div>
+									<div class="item-funddingstat" style="height:60px;">
+										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
+										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 project-item">
+							<div class="item-h">
+								<div class="project-card">
+									<div class="item-heart pointer">
+										<button type="button" class="heart-btn"></button>
+									</div>
+									<div class="item-image" style="height:100%;">
+										<a href="#">
+											<img src="../../assets/nar.jpg">
+										</a>
+									</div>
+									<div class="item-moneybar"></div>
+									<div class="item-funddingstat" style="height:60px;">
+										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
+										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 project-item">
+							<div class="item-h">
+								<div class="project-card">
+									<div class="item-heart pointer">
+										<button type="button" class="heart-btn"></button>
+									</div>
+									<div class="item-image" style="height:100%;">
+										<a href="#">
+											<img src="../../assets/nar.jpg">
+										</a>
+									</div>
+									<div class="item-moneybar"></div>
+									<div class="item-funddingstat" style="height:60px;">
+										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
+										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div><!-- row end -->
+				</div>
+			</div>
+		</section>
+  </template>
 
-<script>
-export default {
-  name: 'App',
-  data: function () {
-    return {
-      isLogin: false,
-    }
-  },
-  methods: {
-    logout: function () {
-      this.isLogin = false
-      localStorage.removeItem('jwt')
-      this.$router.push({ name: 'Login' })
-      // 로그아웃하며 토큰 삭제
-    }
-  },
-  created: function () {
-    // 로그인하며 토큰 저장
-    const token = localStorage.getItem('jwt')
-
-    if (token) {
-      this.isLogin = true
-    }
-  }
-}
-</script>
-
-
-<style>
-/* 전체 */
-html {
-  font-size: 16px;
-}
-a {
-  text-decoration: npne;
-}
-#app {
-  font-family: 'Roboto' ,'Noto Sans KR', 'sans-serif';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-
-section {
-  background:#f6f6f6;
-}
-/* 로그인&회원가입 */
-
-  body {
-    font-family: 'Roboto' ,'Noto Sans KR', 'sans-serif';
-  }	
-  .pointer{
-    cursor:pointer;
-  }
-  .logindiv{
-    width: 450px;
-      border: 1px solid #dbdbdb;
-      border-radius: 5px;
-      padding: 32px;
-      margin: 100px auto 80px;
-  }
-  .logindiv h3{
-    font-size:24px;
-    margin-bottom:36px;
-  }
-
-  .login-info-div{
-    border:1px solid #dbdbdb;
-    border-radius:5px;
-    background:#fff;
-    width:100%;
-    height:44px;
-    margin-bottom:24px;
-    font-size:14px;
-    padding:0px 20px;
-  }
-  .login-info-div input{
-    width:100%;
-    border:0px;
-    height:100%;
-    outline:none;
-  }
-  .login-submit-div a{
-    display:inline-block;
-    width:100%;
-    text-align: center;
-    padding:10px 0px;
-    background:#ff9696;
-    border-radius:5px;
-    color:#fff;
-    font-size:16px;
-  }
-  .small-join {
-    text-align: center;
-  }
-  .small-join span{
-    font-size: 11px;
-    color:#c7c7c7;
-  }
-  .small-join span a{
-    color:#27a3ff;
-  }
-  .the_line{
-    border:1px solid #dbdbdb;
-    margin:15px 0px;
-  }
-  .join-uptext{
-    margin-bottom:10px;
-  }
-
-  .join-checkbox-label input{
-    width:16px;
-    height:16px;
-  }
-  .join-checkbox-label span{
-    font-weight:400;
-    margin-left:10px;
-    font-size:13px;
-    vertical-align:3px;
-  }
-  .join-checkbox ul li div a{
-    font-size:11px;
-    color:#27a3ff;
-    vertical-align:-2px;
-  }
-
-
-
-/* 영화 목록&상세페이지&리뷰댓글 */
+<style scoped="scoped">
 .user-photo{
 	width:38px;
 	height:38px;
@@ -546,7 +561,7 @@ section {
 }
 .info-text {
   font-size: 14px;
-  min-width: 50px;
+  min-width: 70px;
   line-height: 30px;
   display: inline-block;
   color: #969696;
@@ -887,286 +902,4 @@ section {
 .item-image a img{
 width:100%;
 }
-
-/* 프로필 */
-
-.container2 {
-	position:relative;
-	width:1080px;
-	height:1200px;
-	padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-	padding-top:15px;
-}
-.absoluteid1 {
-	position:absolute;
-	margin-left:230px;
-	margin-top:3px;
-	width: 205px;
-  height: 113px;
-	border:1px solid #dbdbdb;
-	background:white;
-	border-radius:5px;
-	display:none;
-	z-index:100;
-}
-.absoluteid1-1 {
-	width:100%;
-	height:56px;
-	padding: 17px 35px 10px 15px;	
-	border-bottom:1px solid #dbdbdb;
-}
-.absoluteid1-2 {
-	width:100%;
-	height:56px;
-	padding: 17px 35px 10px 15px;
-}
-.absoluteid1-1:hover {
-	border-radius:5px;	
-	color:#3aa3e3;
-	background:#edf6fc;
-	transition: 0.1s linear !important;
-    -webkit-transition: 0.1s linear !important;
-}
-.absoluteid1-2:hover {
-
-	height:55px;
-	color:#3aa3e3;
-	background:#edf6fc;
-	transition: 0.1s linear !important;
-    -webkit-transition: 0.1s linear !important;
-}
-/************************왼쪽 메뉴바 ********************************/
-
-.container2-1 {
-	float:left;
-	width:257px;
-	height:690px;
-	margin-right:15px;
-}
-.container2-1-1 {
-	width:100%;
-	height:295px;
-	border:1px solid #dbdbdb;
-	margin-bottom:15px;
-	background:white;
-	border-radius:5px;
-}
-.container2-1-1-1 {
-	width:100%;
-	height:86px;
-	border-bottom:1px solid #dbdbdb;
-}
-.container2-1-1-2 {
-	width:100%;
-	height:208px;
-	border-bottom:1px solid #dbdbdb;
-}
-.container2-1-1-3 {
-	width:100%;
-	height:152px;
-}
-.container2-1_box0 {
-	width:100%;
-	height:86px;
-	padding: 10px 35px 10px 15px;
-}
-.container2-1_box0_img {
-	float:left;
-	width:38px;
-	height:38px;
-	margin-right:25px;
-	padding: 10px;
-}
-.container2-1_box1 {
-	width:100%;
-	height:56px;
-	padding: 20px 35px 10px 15px;
-}
-.container2-1_box2 {
-	width:100%;
-	height:30px;
-	padding: 10px 15px;
-	font-size:12px;
-	color:#ff9696;
-}
-.container2-1_box2 img {
-	margin-bottom: 2px;
-	margin-left:3px;
-	width:40px;
-	height:20px;
-}
-.container2-1_box_id {
-	margin-top:3px;
-}
-.container2-1-2 {
-	width:100%;
-	height:170px;
-	border:1px solid #dbdbdb;
-	background:white;
-	border-radius:3px;
-}
-.container2-1_box0:hover {
-	height:85px;
-	color:#3aa3e3;
-	background:#edf6fc;
-	transition: 0.1s linear !important;
-    -webkit-transition: 0.1s linear !important;
-}
-.container2-1_box1:hover {
-	color:#3aa3e3;
-	background:#edf6fc;
-	transition: 0.1s linear !important;
-    -webkit-transition: 0.1s linear !important;
-}
-
-/********************* 오른쪽 메인 컨텐츠 ***************************/
-
-.container2-2 {
-	float:left;
-	width:772px;
-	border:1px solid #dbdbdb;
-	background:white;
-	border-radius:3px;
-}
-.container2-2-1 {
-	width:100%;
-	height:66px;
-	border-bottom:1px solid #dbdbdb;
-}
-.container2-2-1-1 {
-	float:left;
-	padding-top:12px;
-	margin-left:20px;
-}
-.container2-2-1-2 {
-	float:right;
-	margin:15px;
-	margin-right:40px;
-}
-
-.container2-2-2 {
-	width:100%;
-	height:234px;
-	border-bottom:1px solid #dbdbdb;
-	padding:20px;
-}
-.container2-2-2-1 {
-	float:left;
-	margin-top:30px;
-	margin-right:20px;
-}
-.container2-2-2-1 img{
-	width:130px;
-	height:130px;
-	border:1px solid #dbdbdb;		
-	border-radius:100px;
-}
-.container2-2-2-2 {
-	margin-top:20px;
-	margin-bottom:5px;
-}
-.container2-2-2-2 a {
-	color:#337ab7;
-}
-.container2-2-2-2 a:hover {
-	color:#00437c;
-	text-decoration: underline; 
-}
-.container2-2-2-3 {
-	margin-bottom:10px;
-}
-/************************ 프로필 추가변경 *****************************/
-
-.container2-2-2 {
-	width:100%;
-	height:749px;
-	padding:0px;
-	border:0px;
-	font-size:13px;
-} 
-.container2-2-2-1 {
-	float:left;
-	width:100%;
-	height:150px;
-	border-bottom:1px solid #dbdbdb;
-	margin:0px;
-	padding:20px;
-}
-
-.container2-2-2-1-p {
-	float:left;
-	width:100%;
-	height:200px;
-	border-bottom:1px solid #dbdbdb;
-	margin:0px;
-	padding:20px;
-}
-.container2-2-2-1 div:first-child {
-	margin-bottom: 10px;
-	font-size:17px;	
-}
-
-.container2-2-2-1 input {
-	width:90%;
-	height:40px;
-	border:1px solid #ff9696;
-	border-radius: 5px;
-	margin-bottom: 10px;
-}
-.container2-2-2-1 button {
-	width:50px;
-	height:33px;
-	background: #ff9696;
-	color:white;
-	border:0px;
-	border-radius: 5px;
-}
-.container2-2-2-2 {
-	float:left;
-	width:100%;
-	height:350px;
-	border-bottom:1px solid #dbdbdb;
-	margin:0px;
-	padding:20px;
-}
-.container2-2-2-2 div:first-child {
-	margin-bottom: 10px;
-	font-size:17px;
-}
-.container2-2-2-2 button {
-	width:50px;
-	height:33px;
-	background: #ff9696;
-	color:white;
-	border:0px;
-	border-radius: 5px;
-}
-.icon1-2 {
-	width:100%;
-	height:83%;
-	background-color: #f3f3f3;
-
-}
-.icon1-2 img {
-	width:100px;
-	height:100px;
-	margin-left:42%;
-	margin-top:40px;
-	background:gray;
-	border-radius: 100px;
-	border:0px;	
-}
-.icon1-2 input {
-	margin-top:20px;
-	margin-left:38%;
-}
-.icon1-2 button {
-	width:100px;
-	margin-top:20px;
-	margin-left:42%;
-}
-
 </style>
