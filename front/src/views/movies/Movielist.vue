@@ -45,6 +45,12 @@
 								<span>코미디</span>
 							</span>
 						</a>
+            <a href="">
+							<span class="category-part">
+								<span class="category-1"></span>
+								<span>지역별</span>
+							</span>
+						</a>
 					</div>
 				</div>
 				<div class="listifodiv">
@@ -213,7 +219,7 @@
 
 .categorydiv{
 	margin:14px auto;
-	width: 832px;
+	width: 900px;
 	text-align: center;
 	
 }

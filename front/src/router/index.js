@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/main/Home.vue'
-import Signup from '../views/accounts/Signup.vue'
-import Login from '../views/accounts/Login.vue'
-import Profile from '../views/accounts/Profile.vue'
-import Movielist from '../views/movies/Movielist.vue'
-import Moviedetail from '../views/movies/Moviedetail.vue'
-import Moviecommunity from '../views/movies/Moviecommunity.vue'
+import Home from '@/views/main/Home.vue'
+import Signup from '@/views/accounts/Signup.vue'
+import Login from '@/views/accounts/Login.vue'
+import Profile from '@/views/accounts/Profile.vue'
+import Movielist from '@/views/movies/Movielist.vue'
+import Moviedetail from '@/views/movies/Moviedetail.vue'
+import Moviecommunity from '@/views/movies/Moviecommunity.vue'
+import MovieRecommend from '@/views/movies/MovieRecommend.vue'
+
 
 Vue.use(VueRouter)
 
@@ -45,6 +47,11 @@ const routes = [
     path: '/movies/Moviecommunity',
     name: 'Moviecommunity',
     component: Moviecommunity
+  },
+  {
+    path: '/movies/MovieRecommend',
+    name: 'MovieRecommend',
+    component: MovieRecommend
   },
 ]
 

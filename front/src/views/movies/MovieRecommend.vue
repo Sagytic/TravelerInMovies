@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+    <h1>movie Recommend</h1>
   </div>
 </template>
 

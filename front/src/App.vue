@@ -7,12 +7,6 @@
         </b-navbar-nav>
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-                <b-nav-item-dropdown text="Search" right>
-                  <b-dropdown-item href="#">All</b-dropdown-item>
-                  <b-dropdown-item href="#">Location</b-dropdown-item>
-                  <b-dropdown-item href="#">Recommend</b-dropdown-item>
-                  <b-dropdown-item href="#">Genre</b-dropdown-item>
-                </b-nav-item-dropdown>
                 <b-nav-item-dropdown text="Account" right>
                   <span v-if="isLogin">
                     <b-dropdown-item :to="{ name: 'Profile' }">Profile</b-dropdown-item>
@@ -25,6 +19,7 @@
                 </b-nav-item-dropdown>
                 <b-nav-item-dropdown text="Movies" right>
                   <b-dropdown-item :to="{ name: 'Movielist' }">Movielist</b-dropdown-item>
+                  <b-dropdown-item :to="{ name: 'MovieRecommend' }">Recommend</b-dropdown-item>
                 </b-nav-item-dropdown>
           </b-navbar-nav>
       </b-navbar>
