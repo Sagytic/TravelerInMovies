@@ -5,7 +5,7 @@ from imagekit.processors import ResizeToFill
 
 
 class User(AbstractUser):
-    nickname = models.CharField(max_length=100)
+    nickname = models.CharField(max_length=100, default='')
     background_image = ProcessedImageField(
         blank=True,
         upload_to='profile_background_images/%Y/%m/%d',

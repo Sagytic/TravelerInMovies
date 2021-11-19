@@ -74,9 +74,9 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="listdiv">
-					<div class="row">
+					<div class="row" >
 
-						<div class="col-md-4 project-item">
+						<div class="col-md-4 project-item" v-for="movie in movies" :key="movie.id">
 							<div class="item-h">
 								<div class="project-card">
 									<div class="item-heart pointer">
@@ -85,118 +85,62 @@
                   <router-link :to="{ name: 'Moviedetail' }">
 									<div class="item-image" style="height:100%;">
 										<a href="#">
-											<img src="../../assets/nar.jpg">
+											<img :src="movie.poster_path">
+                      
 										</a>
 									</div>
                   </router-link>
+    
 									<div class="item-moneybar"></div>
 									<div class="item-funddingstat" style="height:60px;">
-										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
+										<span class="fundding-amount">{{movie.title}}</span>
 										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
 									</div>
 								</div>
 							</div>
 						</div>
-            <div class="col-md-4 project-item">
-							<div class="item-h">
-								<div class="project-card">
-									<div class="item-heart pointer">
-										<button type="button" class="heart-btn"></button>
-									</div>
-									<div class="item-image" style="height:100%;">
-										<a href="#">
-											<img src="../../assets/nar.jpg">
-										</a>
-									</div>
-									<div class="item-moneybar"></div>
-									<div class="item-funddingstat" style="height:60px;">
-										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
-										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 project-item">
-							<div class="item-h">
-								<div class="project-card">
-									<div class="item-heart pointer">
-										<button type="button" class="heart-btn"></button>
-									</div>
-									<div class="item-image" style="height:100%;">
-										<a href="#">
-											<img src="../../assets/nar.jpg">
-										</a>
-									</div>
-									<div class="item-moneybar"></div>
-									<div class="item-funddingstat" style="height:60px;">
-										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
-										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 project-item">
-							<div class="item-h">
-								<div class="project-card">
-									<div class="item-heart pointer">
-										<button type="button" class="heart-btn"></button>
-									</div>
-									<div class="item-image" style="height:100%;">
-										<a href="#">
-											<img src="../../assets/nar.jpg">
-										</a>
-									</div>
-									<div class="item-moneybar"></div>
-									<div class="item-funddingstat" style="height:60px;">
-										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
-										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 project-item">
-							<div class="item-h">
-								<div class="project-card">
-									<div class="item-heart pointer">
-										<button type="button" class="heart-btn"></button>
-									</div>
-									<div class="item-image" style="height:100%;">
-										<a href="#">
-											<img src="../../assets/nar.jpg">
-										</a>
-									</div>
-									<div class="item-moneybar"></div>
-									<div class="item-funddingstat" style="height:60px;">
-										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
-										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 project-item">
-							<div class="item-h">
-								<div class="project-card">
-									<div class="item-heart pointer">
-										<button type="button" class="heart-btn"></button>
-									</div>
-									<div class="item-image" style="height:100%;">
-										<a href="#">
-											<img src="../../assets/nar.jpg">
-										</a>
-									</div>
-									<div class="item-moneybar"></div>
-									<div class="item-funddingstat" style="height:60px;">
-										<span class="fundding-amount">C.S. Lewis: Beyond Narnia</span>
-										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
-									</div>
-								</div>
-							</div>
-						</div>
+
+
 					</div><!-- row end -->
 				</div>
 			</div>
 		</section>
-  </template>
+</template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  name: 'Movielist',
+  data: function () {
+    return {
+      movies: null,
+    }
+  },
+  methods: {
+    getMovies: function () {
+      axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8000/movies/',
+      })
+        .then(res => {
+          console.log(res)
+          this.movies = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
+  },
+
+  created: function () {
+    this.getMovies()
+  }
+
+}
+  
+</script>
 
 <style scoped="scoped">
 .user-photo{

@@ -7,9 +7,16 @@
 					<form name="loginform">
 						<div class="join-uptext">아이디</div>
 						<div class="login-info-div">
-							<input type="text" name="id" id="id" v-model="credentials.username" placeholder="아이디는 영문 대소문자 5~15자 이내로 생성 가능합니다." >
+							<input type="text" name="username" id="username" v-model="credentials.username" placeholder="아이디는 영문 대소문자 5~15자 이내로 생성 가능합니다." >
 							<span id="msg1" style="color:#f00"></span>
 						</div>
+						<!-- 닉네임 추가 -->
+						<div class="join-uptext">닉네임</div>
+						<div class="login-info-div">
+							<input type="text" name="nickname" id="nickname" v-model="credentials.nickname" placeholder="닉네임은 영문 대소문자 5~15자 이내로 생성 가능합니다." >
+							<span id="msg2" style="color:#f00"></span>
+						</div>
+						<!--  -->
 						<div class="join-uptext">비밀번호</div>
 						<div class="login-info-div">
 							<input type="password" name="pw" id="pw" v-model="credentials.password" placeholder="비밀번호는 영문 대소문자 8~15자 이내로 생성 가능합니다.">
@@ -19,11 +26,12 @@
 							<input type="password" name="pw2" id="pw2" v-model="credentials.passwordConfirmation" placeholder="비밀번호를 확인합니다">
 							<span id="msg4" style="color:#f00"></span>
 						</div>
-						<div class="join-uptext">이메일</div>
+						<!-- 이메일 X -->
+						<!-- <div class="join-uptext">이메일</div>
 						<div class="login-info-div">
 							<input type="email" name="email" id="email" v-model="credentials.email" placeholder="사용하실 이메일을 입력해주세요">
 							<span id="msg5" style="color:#f00"></span>
-						</div>
+						</div> -->
 						<div class="">
 							<label for="allcheck" class="pointer join-checkbox-label pull-left">
 								<input id="allcheck" type="checkbox" name="allcheck"><span>전체 동의</span>
@@ -90,6 +98,9 @@
 <script>
 import axios from 'axios'
 import 'bootstrap'
+// npm i vue-swal 필요
+import swal from "sweetalert";
+
 // import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 // npm update vue-template-compiler 필요
 
@@ -98,16 +109,16 @@ export default {
   data: function () {
     return {
       credentials: {
-        id: null,
+        username: null,
+				nickname: null,
         password: null,
         passwordConfirmation: null,
-        email: null,
       }
     }
   },
   methods: {
     signup: function () {
-        axios({
+      axios({
         method: 'post',
         url: 'http://127.0.0.1:8000/accounts/signup/',
         data: this.credentials
@@ -115,11 +126,14 @@ export default {
         .then(() => {
           this.$router.push({ name: 'Login'})
         })
+				// back에서 확인후 가져온 에러로 팝업창 띄우기
         .catch(err => {
-          console.log(err)
-        })
-      }
+          swal(err.response.data.error, {
+            dangerMode: true,
+          })
+      })
     },
+	}
 }
 </script>
 

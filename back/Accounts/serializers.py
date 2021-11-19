@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta: 
         model = get_user_model()
-        fields = ('username', 'nickname','password', )
+        fields = ('username', 'nickname', 'password', )
 
 # 유저 프로필 serialier 는 이미지를 url화하여 사용
 class UserProfileSerializer(serializers.ModelSerializer):

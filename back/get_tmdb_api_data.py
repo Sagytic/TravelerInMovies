@@ -1,5 +1,5 @@
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MOVIE_DB.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'PJT_final.settings')
 import django
 django.setup()
 import requests

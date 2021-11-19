@@ -35,22 +35,18 @@
 				if(loginform.pw.value != loginform.pw2.value){
 					alert("비밀번호를 다시 확인해주세요");
 					loginform.pw2.value="";
-					loginform.pw2.focus();
 				}
 				
 				if($(loginform.ok).is(":checked")==false){
 					alert("  이용 약관 동의를 체크하세요")
-					$(loginform.ok).focus();
 					return ;
 				}
 				if($(loginform.ok2).is(":checked")==false){
 					alert("개인 정보 수집,이용 동의를 체크하세요")
-					$(loginform.ok3).focus();
 					return ;
 				}
 				if($(loginform.ok3).is(":checked")==false){
 					alert("만 14세 이상 동의를 체크하세요")
-					$(loginform.ok3).focus();
 					return ;
 				}
 			}
@@ -62,7 +58,6 @@
 					if(!idRegExp.test($("#id").val())) {	
 						$("#msg1").html("영문 대소문자 5~15자 이내인지 확인해주세요");
 						$("#id").val("");
-						$("#id").focus();
 						return false;
 					} else {
 						$("#msg1").html("사용 가능한 아이디입니다.");
@@ -80,7 +75,6 @@
 					if(!idRegExp.test($("#pw").val())) {	
 						$("#msg3").html("비밀번호가 8자 이상 15자 이내인지 확인해주세요");
 						$("#pw").val("");
-						$("#pw").focus();
 						return false;
 					} else {
 						$("#msg3").html("사용 가능한 비밀번호입니다.");
@@ -95,7 +89,6 @@
 				if($("#pw").val() != $("#pw2").val()) {
 					$("#msg4").html("비밀번호가 일치하지 않습니다.");
 					$("#pw2").val("");
-					$("#pw2").focus();
 					return false;
 				} else {
 					$("#msg4").html("비밀번호가 일치합니다.");
@@ -110,7 +103,6 @@
 				
 				if(!regEmail.test($("#email").val())) {
 					$("#msg5").html("유효한 이메일 주소가 아닙니다.");
-					$("#email").focus();
 					return false;
 				} else {
 					$("#msg5").html("사용 가능한 이메일입니다.");
