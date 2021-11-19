@@ -1,12 +1,10 @@
 from django.urls import path
 from . import views
-
-# jwt 토큰 발급용
 from rest_framework_jwt.views import obtain_jwt_token
 
-
+app_name = 'accounts'
 urlpatterns = [
-    path('signup/', views.signup),
-    # 토큰 발급용 url
+    path('signup/', views.signup, name='signup'),
+    path('profile/', views.profile, name='profile'),
     path('api-token-auth/', obtain_jwt_token),
 ]
