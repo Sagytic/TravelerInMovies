@@ -75,7 +75,6 @@
 				</div>
 				<div class="listdiv">
 					<div class="row" >
-
 						<div class="col-md-4 project-item" v-for="movie in movies" :key="movie.id">
 							<div class="item-h">
 								<div class="project-card">
