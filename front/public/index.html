@@ -17,20 +17,20 @@
   </head>
   <body>
     <script type="text/javascript">
-      function chekEmpty(obj,msg){
-        if(obj.value.trim() ==""){
-          alert(msg);
-          obj.focus();
-          return false;
-        }else{
-          return true;
-        }
-      }
+      // function chekEmpty(obj,msg){
+      //   if(obj.value.trim() ==""){
+      //     alert(msg);
+      //     obj.focus();
+      //     return false;
+      //   }else{
+      //     return true;
+      //   }
+      // }
 			function goJoin(){
-				if(!chekEmpty(loginform.id,"아이디를 입력해주세요")) return;
-				if(!chekEmpty(loginform.pw,"비밀번호를를 입력해주세요")) return;
-				if(!chekEmpty(loginform.pw2,"비밀번호확인을 입력해주세요")) return;
-				if(!chekEmpty(loginform.email,"이메일을 입력해주세요")) return;
+				// if(!chekEmpty(loginform.id,"아이디를 입력해주세요")) return;
+				// if(!chekEmpty(loginform.pw,"비밀번호를를 입력해주세요")) return;
+				// if(!chekEmpty(loginform.pw2,"비밀번호확인을 입력해주세요")) return;
+				// if(!chekEmpty(loginform.email,"이메일을 입력해주세요")) return;
 				
 				if(loginform.pw.value != loginform.pw2.value){
 					alert("비밀번호를 다시 확인해주세요");
@@ -53,11 +53,11 @@
 		</script>
 		<script>	
 		$(function(){
-			$("#id").blur(function() {
+			$("#username").blur(function() {
 				 var idRegExp = /^[a-zA-z0-9]{5,15}$/;
-					if(!idRegExp.test($("#id").val())) {	
+					if(!idRegExp.test($("#username").val())) {	
 						$("#msg1").html("영문 대소문자 5~15자 이내인지 확인해주세요");
-						$("#id").val("");
+						$("#username").val("");
 						return false;
 					} else {
 						$("#msg1").html("사용 가능한 아이디입니다.");
