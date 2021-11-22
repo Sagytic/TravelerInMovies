@@ -22,6 +22,9 @@
                   <b-dropdown-item :to="{ name: 'MovieRecommend' }">Recommend</b-dropdown-item>
                 </b-nav-item-dropdown>
           </b-navbar-nav>
+      <div style="color:white; margin-left:auto; margin-right:20px;">
+        {{username}} 님 반갑습니다~
+      </div>
       </b-navbar>
     </div>
 
@@ -31,29 +34,40 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: 'App',
   data: function () {
     return {
       isLogin: false,
+      username: null,
     }
   },
   methods: {
     logout: function () {
       this.isLogin = false
       localStorage.removeItem('jwt')
+      localStorage.removeItem("username")
+      this.username = null
       this.$router.push({ name: 'Login' })
       // 로그아웃하며 토큰 삭제
-    }
+    },
   },
-  created: function () {
+  updated: function () {
     // 로그인하며 토큰 저장
     const token = localStorage.getItem('jwt')
+    const currentUser = localStorage.getItem("username")
 
     if (token) {
       this.isLogin = true
+      this.username = currentUser
     }
-  }
+  },
+  computed: {
+    ...mapGetters([
+      'getusernamei', 
+    ])
+  },
 }
 </script>
 
@@ -178,7 +192,7 @@ section {
 	height:38px;
 	margin-right: 10px;
 }
-.ac-sub-go-top{
+/* .ac-sub-go-top{
   width: 30px;
   height: 30px;
   bottom:calc(50% - 35px);
@@ -189,7 +203,7 @@ section {
   border: none;
   background-size: 50%;
   display: none;
-}
+} */
 
 .categorydiv{
 	margin:14px auto;
@@ -447,20 +461,6 @@ section {
   height: 38px;
   margin-right: 10px;
 }
-
-.ac-sub-go-top {
-  width: 30px;
-  height: 30px;
-  bottom: calc(50% - 35px);
-  position: fixed;
-  right: calc((100% - 1200px)/ 2 - 80px);
-  display: inline-block;
-  background: rgba(255,255,255,0.7);
-  border: none;
-  background-size: 50%;
-  display: none;
-}
-
 .sitelogo {
   width: 100%;
 }
