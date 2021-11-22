@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <div >
+    <div style="position:sticky; top:0;">
       <b-navbar toggleable="lg" type="dark" variant="dark">
         <b-navbar-nav>
-          <b-nav-item :to="{ name: 'Home' }"><span style="color: rgba(140, 100, 172);">Traveler</span> <span style="color: rgba(100, 240, 160);"> In</span> Movies</b-nav-item>
+          <b-nav-item :to="{ name: 'Home' }"><span style="color:pink"> Traveler in Movies </span></b-nav-item>
         </b-navbar-nav>
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">

@@ -1,4 +1,5 @@
 import os
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'PJT_final.settings')
 import django
 django.setup()
@@ -52,6 +53,13 @@ def get_movie(movie_data):
             movie = requests.get(url).json().get('results')[0]
 
             movieId = movie['id']
+
+            # 감독 / 배우 path
+            img_path = 'https://image.tmdb.org/t/p/w500'
+            url_credits = f'https://api.themoviedb.org/3/movie/{movieId}/credits?api_key={api_key}&language=ko-KR'
+            credits = requests.get(url_credits).json()
+            actor1_path = ''
+            
             title = movie['title']
             poster_path = 'https://image.tmdb.org/t/p/w500'+movie['poster_path']
             popularity = movie['popularity']
@@ -60,26 +68,41 @@ def get_movie(movie_data):
             genre_ids = movie['genre_ids']
             overview = movie['overview']
             country_name = nation
-
+            # actor for movies
+            for actor in credits['cast'][:2]:
+                if actor['profile_path']:
+                    if actor1_path:
+                        actor2_path = img_path + actor['profile_path']
+                        actor2_name = actor['original_name']
+                    else: 
+                        actor1_path = img_path + actor['profile_path']
+                        actor1_name = actor['original_name']
+                else:
+                    pass
+            # director for movies
+            for crew in  credits['crew']:
+                if crew['job'] == 'Director':
+                    if crew['profile_path']:
+                        director_path = img_path + crew['profile_path']
+                        director_name = crew['original_name']
+                    else:
+                        director_path = 'None'
+                        director_name = crew['original_name']
             if not overview:
                 movie = requests.get(url_en).json().get('results')[0]
                 overview = movie['overview']
 
             print(title, '-----')
             # Movie에 데이터 추가
-            movie_instance = Movie(title=title, overview=overview, poster_path=poster_path, popularity=popularity, vote_count= vote_count, vote_avg = vote_avg, country_name=country_name)
+            movie_instance = Movie(title=title, overview=overview, poster_path=poster_path, popularity=popularity, vote_count= vote_count, vote_avg = vote_avg, country_name=country_name, director_path=director_path, actor1_path=actor1_path, actor2_path=actor2_path, actor1_name=actor1_name, actor2_name=actor2_name, director_name=director_name)
             movie_instance.save()
 
             # 장르와 N:M 관계 추가
             for genre_id in genre_ids:
                 genre = Genre.objects.get(tmdb_genre_id=genre_id)
                 movie_instance.genres.add(genre)
-
-
+            
             # 배우 추가
-            img_path = 'https://image.tmdb.org/t/p/original'
-            url_credits = f'https://api.themoviedb.org/3/movie/{movieId}/credits?api_key={api_key}&language=ko-KR'
-            credits = requests.get(url_credits).json()
             for actor in credits['cast'][:5]:
                 if actor['profile_path']:
                     profile_path = img_path + actor['profile_path']
@@ -104,6 +127,7 @@ def get_movie(movie_data):
                     # 감독 : 영화 N:M 관계 추가
                     director_instance.movies.add(movie_instance)
                     break
+
 
 
 get_genre(genre_url)

@@ -42,6 +42,12 @@ class MovieListSerializer(serializers.ModelSerializer):
             'user_vote_count', 
             'user_vote_avg',
             'country_name',
+            'director_path',
+            'director_name',
+            'actor1_path',
+            'actor1_name',
+            'actor2_path',
+            'actor2_name',
         )
 
 # 단일 영화 Read용
