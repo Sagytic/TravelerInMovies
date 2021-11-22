@@ -1,6 +1,10 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 from .models import User
 
-admin.site.register(User, UserAdmin)
+class UserProfileAdmin(admin.ModelAdmin):
+    profilefields = ['nickname','profile_image','background_image','rank_point']
+
+admin.site.register(User, UserProfileAdmin)
+    
+
 

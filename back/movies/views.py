@@ -180,3 +180,4 @@ def director(request, movie_pk):
 # 평점 매기는거는 나중에 
 def voterate(request, movie_pk):
     pass
+

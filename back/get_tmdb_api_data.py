@@ -103,6 +103,9 @@ def get_movie(movie_data):
                 movie_instance.genres.add(genre)
             
             # 배우 추가
+            img_path = 'https://image.tmdb.org/t/p/w500'
+            url_credits = f'https://api.themoviedb.org/3/movie/{movieId}/credits?api_key={api_key}&language=ko-KR'
+            credits = requests.get(url_credits).json()
             for actor in credits['cast'][:5]:
                 if actor['profile_path']:
                     profile_path = img_path + actor['profile_path']

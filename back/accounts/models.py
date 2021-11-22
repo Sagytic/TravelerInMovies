@@ -24,4 +24,4 @@ class User(AbstractUser):
     rank_point = models.BigIntegerField(default=0)
 
     # 팔로워 팔로우 N:M 관계
-    followers = models.ManyToManyField('self', symmetrical=False, related_name='followings')
+    # followers = models.ManyToManyField('self', symmetrical=False, related_name='followings')

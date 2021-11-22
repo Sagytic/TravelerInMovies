@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from movies.models import Review
 
 User = get_user_model()
 
@@ -8,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
     class Meta: 
-        model = get_user_model()
+        model = User
         fields = ('username', 'nickname', 'password', )
 
 # 유저 프로필 serialier 는 이미지를 url화하여 사용
@@ -18,4 +19,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('nickname', 'profile_image', 'background_image', 'rank_point', 'followers')
+        fields = ('id','nickname', 'profile_image', 'background_image', 'rank_point')
+
+
+class UserReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
