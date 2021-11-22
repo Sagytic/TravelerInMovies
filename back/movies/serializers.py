@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Movie, Review, Comment, Genre, Director, Actor, VoteRate
 
 from accounts.serializers import UserProfileSerializer
+from django_summernote.widgets import SummernoteWidget
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -18,10 +19,10 @@ class ReviewSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)
     class Meta:
         model = Review
-        fields = ('id', 'user', 'movie', 'title', 
+        fields = ('id', 'user_id', 'movie_id', 'title', 
         'rank', 'content', 'created_at', 'updated_at'
-        , 'comments', 'comments_count')
-        read_only_fields = ('movie',)
+        , 'comments', 'comments_count', 'user')
+        read_only_fields = ('movie', 'user')
 
 
 # 영화 리스트 Read용
@@ -70,9 +71,7 @@ class MovieSerializer(serializers.ModelSerializer):
             'country_name',
             'reviews',
             'reviews_count',
-            
         )
-
 
 class GenreSerializer(serializers.ModelSerializer):
     
