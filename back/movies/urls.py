@@ -15,10 +15,12 @@ urlpatterns = [
     path('reviews/<int:review_pk>/comments/', views.comment_list, name='comment_list'),
     path('comments/<int:comment_pk>/', views.comment_detail, name='comment_detail'),
 
-    # 영화 감독, 배우, 장르 url?
-    # path('<int:movie_pk>/director', views.director, name='director'),
+    # 배우 호출 url
     # path('<int:movie_pk>/actors', views.actors, name='actors'),
-    # path('<int:movie_pk>/genres', views.genres, name='genres'),
+    # 장르 호출 url
+    path('<int:movie_pk>/genres', views.genres, name='genres'),
+    # 감독 호출 url
+    path('<int:movie_pk>/director', views.director, name='director'),
 
     # 평점 url
     path('<int:movie_pk>/voterate/', views.voterate, name='voterate'),
