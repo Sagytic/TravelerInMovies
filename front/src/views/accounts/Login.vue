@@ -57,7 +57,9 @@ export default {
         data: this.credentials
       })
         .then(res => {
+          console.log(this.credentials)
           localStorage.setItem('jwt', res.data.token)
+          localStorage.setItem('username', this.credentials.username)
           this.$emit('login')
           console.log(res.data.token)
           this.loginGetToken()

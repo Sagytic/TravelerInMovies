@@ -21,6 +21,7 @@ export default new Vuex.Store({
     countries_cnt: {},
     reviews: [],
     review_movies: [],
+    usernamei: localStorage.getItem("username")
   },
   getters: {
     config: function (state) {
@@ -33,6 +34,9 @@ export default new Vuex.Store({
         userid: state.userid
       }
     },
+    getusernamei: state => {
+      return state.usernamei
+    }
   },
 
   mutations: {
@@ -58,7 +62,6 @@ export default new Vuex.Store({
     GET_REVIEWS_MOVIE_INFO: function (state, data) {
       state.review_movies = data
     }
-
   },
   actions: {
     loginGetToken: function ({commit}) {

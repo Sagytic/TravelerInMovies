@@ -3,7 +3,7 @@
       <section>
 			<div class="containers">
 				<div class="logindiv center-block mt40">
-					<h3>가입하기</h3>
+					<h3><button @click="refreshAll"></button>가입하기</h3>
 					<form name="loginform">
 						<div class="join-uptext">아이디</div>
 						<div class="login-info-div">
@@ -133,6 +133,9 @@ export default {
           })
       })
     },
+		refreshAll() {
+				this.$router.go();
+			},
 	}
 }
 </script>
