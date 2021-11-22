@@ -55,19 +55,17 @@
 				</div>
 				<div class="listifodiv">
 					<div class="pull-left">
-						<p class="procount"><span>1,234</span>개의 영화가 있습니다.</p>
+						<p class="procount"><span>{{movies.length}}</span>개의 영화가 있습니다.</p>
 					</div>
 					<div class="pull-right">
 						<div class="dropdown">
 							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-								평점순 <span class="caret"></span>
+								평점순
 							</button>
 							<ul class="dropdown-menu" role="menu"
 								aria-labelledby="dropdownMenu1">
 								<li role="presentation"><a role="menuitem" tabindex="-1" href="#">평점순</a></li>
 								<li role="presentation"><a role="menuitem" tabindex="-1" href="#">개봉일순</a></li>
-								<!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="#">최다 금액순</a></li>
-								<li role="presentation"><a role="menuitem" tabindex="-1" href="#">마감 임박순</a></li> -->
 							</ul>
 						</div>
 					</div>
@@ -75,36 +73,46 @@
 				</div>
 				<div class="listdiv">
 					<div class="row" >
-						<div class="col-md-4 project-item" v-for="movie in movies" :key="movie.id">
+						<table class="col-md-4 project-item" 
+            v-for="movie in movies"
+            :key="movie.id" 
+            :items="movies"
+            :per-page="perPage"
+            :current-page="currentPage">
 							<div class="item-h">
 								<div class="project-card">
 									<div class="item-heart pointer">
 										<button type="button" class="heart-btn"></button>
 									</div>
-                  <router-link :to="{ name: 'Moviedetail' }">
-									<div class="item-image" style="height:100%;">
+                  <router-link :to="{ name: 'Moviedetail', params: { movie_pk:movie.id } }" >
+									<div class="item-image">
 										<a href="#">
 											<img :src="movie.poster_path">
-                      
 										</a>
 									</div>
                   </router-link>
-    
-									<div class="item-moneybar"></div>
 									<div class="item-funddingstat" style="height:60px;">
 										<span class="fundding-amount">{{movie.title}}</span>
-										<span class="percent"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+										<span class="percent">{{movie.vote_avg}}/10</span>
 									</div>
 								</div>
 							</div>
-						</div>
+						</table>
+              <!-- <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="my-table"
+              ></b-pagination> -->
 
-
+              <p class="mt-3">Current Page: {{ currentPage }}</p>
 					</div><!-- row end -->
 				</div>
 			</div>
 		</section>
 </template>
+
+
 
 <script>
 import axios from 'axios'
@@ -114,6 +122,8 @@ export default {
   data: function () {
     return {
       movies: null,
+      perPage:9,
+      currentPage:1,
     }
   },
   methods: {
@@ -123,7 +133,7 @@ export default {
         url: 'http://127.0.0.1:8000/movies/',
       })
         .then(res => {
-          console.log(res)
+          console.log(res.data)
           this.movies = res.data
         })
         .catch(err => {
@@ -135,8 +145,12 @@ export default {
 
   created: function () {
     this.getMovies()
-  }
-
+  },
+  // computed: {
+  //     rows() {
+  //       return this.movies.length
+  //     }
+  //   }
 }
   
 </script>
@@ -287,13 +301,14 @@ export default {
 	position:relative;
 	overflow:hidden;
 	width: 250px;
-  height: 170px;
+  height: 380px;
 }
 .item-image a img:hover{
 	transform: scale(1.2);
 }
 .item-image a img{
 	width:100%;
+  height:100%;
 	position:relative;
 	transition:all 0.3s ease-out;
 }
@@ -331,21 +346,6 @@ export default {
 	padding: 6px 0px;
 	border-radius: 5px;
 	color: #555;
-}
-
-.item-moneybar{
-	width:100%;
-	margin:0px;
-	overflow:hidden;
-	background:#d0d0d0;
-	height:2px;
-	position:relative;
-}
-.item-moneybar-ss{
-	content:"";
-	display: block;
-	height:100%;
-	background:#ff9696;
 }
 
 .inqtext{

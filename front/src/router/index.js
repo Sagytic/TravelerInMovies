@@ -6,7 +6,8 @@ import Login from '@/views/accounts/Login.vue'
 import Profile from '@/views/accounts/Profile.vue'
 import Movielist from '@/views/movies/Movielist.vue'
 import Moviedetail from '@/views/movies/Moviedetail.vue'
-import Moviecommunity from '@/views/movies/Moviecommunity.vue'
+import Moviereviews from '@/views/movies/Moviereviews.vue'
+import Moviereviewswrite from '@/views/movies/Moviereviewswrite.vue'
 import MovieRecommend from '@/views/movies/MovieRecommend.vue'
 
 
@@ -34,19 +35,27 @@ const routes = [
     component: Profile
   },
   {
-    path: '/movies/Movielist',
+    path: '/movies',
     name: 'Movielist',
     component: Movielist
   },
   {
-    path: '/movies/Moviedetail',
+    path: '/movies/:movie_pk',
     name: 'Moviedetail',
-    component: Moviedetail
+    component: Moviedetail,
+    props: true
   },
   {
-    path: '/movies/Moviecommunity',
-    name: 'Moviecommunity',
-    component: Moviecommunity
+    path: '/movies/:movie_pk/Moviereviews',
+    name: 'Moviereviews',
+    component: Moviereviews,
+    props: true
+  },
+  {
+    path: '/movies/:movie_pk/Moviereviewswrite',
+    name: 'Moviereviewswrite',
+    component: Moviereviewswrite,
+    props: true
   },
   {
     path: '/movies/MovieRecommend',
