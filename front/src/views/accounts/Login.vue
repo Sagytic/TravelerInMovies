@@ -28,6 +28,7 @@
 
 <script>
 import axios from 'axios'
+import {mapActions} from 'vuex'
 
 export default {
   name: 'Login',
@@ -40,6 +41,15 @@ export default {
     }
   },
   methods: {
+		...mapActions([
+			'loginGetToken',
+      'getProfile',
+      'getReviewsGenre',
+      'getReviewsCountry',
+      'getReviews',
+      'getReviewsMovieInfo',
+		]),
+
     login: function () {
       axios({
         method: 'post',
@@ -49,12 +59,25 @@ export default {
         .then(res => {
           localStorage.setItem('jwt', res.data.token)
           this.$emit('login')
+          console.log(res.data.token)
+          this.loginGetToken()
+          // this.setToken()
+          this.getProfile()
+          this.getReviewsGenre()
+          this.getReviewsCountry()
+          this.getReviews()
+          this.getReviewsMovieInfo()
           this.$router.push({ name: 'Home' })
+          // commit("SET_TOKEN", res.data.token)
+          
         })
         .catch(err => {
           console.log(err)
         })
     }
-  }
+  },
+  // updated: function () {
+  //   this.getProfile()
+  // }
 }
 </script>

@@ -8,11 +8,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'mdb-vue-ui-kit/css/mdb.min.css';
 import Carousel3d from 'vue-carousel-3d';
+import ElementUI from "element-ui";
+import 'element-ui/lib/theme-chalk/index.css';
 
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(Carousel3d);
+Vue.use(ElementUI);
 
 new Vue({
   router,

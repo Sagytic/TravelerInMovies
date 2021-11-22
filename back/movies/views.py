@@ -148,3 +148,4 @@ def comment_detail(request, comment_pk):
 # 평점 매기는거는 나중에 
 def voterate(request, movie_pk):
     pass
+
