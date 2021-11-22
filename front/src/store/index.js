@@ -5,8 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    usernamei: localStorage.getItem("username")
   },
-  mutations: {
+  getters: {
+    getusernamei: state => {
+      return state.usernamei
+    }
   },
   actions: {
   },

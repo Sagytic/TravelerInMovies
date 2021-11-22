@@ -2,7 +2,7 @@ from django.shortcuts import get_list_or_404, get_object_or_404
 
 from accounts import serializers
 from .models import Movie, Review, Comment, Genre, Director, Actor, VoteRate
-from .serializers import MovieListSerializer, MovieSerializer, ReviewSerializer, CommentSerializer, GenreSerializer, DirectorSerializer, ActorSerializer, VoteRateSerializer
+from .serializers import UserProfileSerializer, MovieListSerializer, MovieSerializer, ReviewSerializer, CommentSerializer, GenreSerializer, DirectorSerializer, ActorSerializer, VoteRateSerializer
 from django.contrib.auth import get_user_model
 
 from rest_framework.response import Response
@@ -47,18 +47,20 @@ def review_list(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     # 리뷰 조회
     if request.method == 'GET':
-        reviews = Review.objects.filter(movie__pk=movie_pk).order_by('-pk')
+        reviews = Review.objects.filter(movie=movie_pk).order_by('-pk')
         paginator = Paginator(reviews, 5)
         page_number = request.GET.get('page_num')
         reviews = paginator.get_page(page_number)
         serializer = ReviewSerializer(reviews, many=True)
         data = serializer.data
-        data.append({'possible_page': paginator.num_pages})
+        data.append({'total_pages': paginator.num_pages})
         return Response(data)
     
     # 리뷰 생성
     elif request.method == 'POST':
+        print(request.data)
         serializer = ReviewSerializer(data=request.data)
+        print(serializer)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user, movie=movie)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
