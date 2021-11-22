@@ -1,120 +1,206 @@
 <template>
   <div id='home'>
-    <!-- logo -->
-    <!-- nav -->
-
-    <!-- bg you/tube 영상이 클릭되지 투명 벽 생성 -->
+    <!-- bg you/tube 영상이 클릭되지 않게 투명 벽 생성 -->
     <div id='wall' style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0;"></div>
+
     <!-- autoplay / fullscreen / prevent touch / autoplay=1&mute=1 -> autoplay ex&chrome--> <!-- {{ videoUrl }} -->
     <iframe width="1920" height="1080" :src="newVid" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    <!-- carousel -->
-      <!-- v-for 변환 -->
-      <!-- <div id="example">
-        <carousel-3d :autoplay="true" :autoplay-timeout="5000" :display="5">
-          <slide v-for="(slide, i) in slides" :index="i">
-            <span class="title">You know</span>
-            <p>You know, being a test pilot isn't always the healthiest business in the world.</p>
-          </slide>
-        </carousel-3d>
-      </div> -->
-      <!-- carousel poster -->
-    <div id="carousel">
-      <carousel-3d :width="150" :height="200" :display="10">
-        <slide :index="0">
-          <img src="https://i.ytimg.com/vi/gC37e02iu4M/movieposter_en.jpg" alt="" @click="changeSpain">
-        </slide>
-        <slide :index="1">
-          <img src="https:/upload.wikimedia.org/wikipedia/ko/1/12/La_la_land.jpg" alt="" @click="changeBGVideo">
-        </slide>
-        <slide :index="2">
-          <img src="https://upload.wikimedia.org/wikipedia/ko/thumb/a/a3/%EA%B7%B8%EB%85%80_%ED%8F%AC%EC%8A%A4%ED%84%B0.jpg/220px-%EA%B7%B8%EB%85%80_%ED%8F%AC%EC%8A%A4%ED%84%B0.jpg" alt="" @click="changeSpain">
-        </slide>
-        <slide :index="3">
-          <img src="https://img2.yna.co.kr/etc/inner/KR/2020/01/10/AKR20200110125500005_01_i_P2.jpg" alt="" @click="changeBGVideo">
-        </slide>
-        <slide :index="4">
-          <img src="http://t1.daumcdn.net/movie/e29bd40296d944288046b02dded779d41548118641846" alt="" @click="changeSpain">
-        </slide>
-        <slide :index="5">
-          <img src="https://w.namu.la/s/476e0d65087f23733229076eb3a481c0a4e85287b0f73e895c7ce77d888953762c122896452700c7244697a8027b0a8b958bf220fc1015f9bd742b86e789a96fa6249cb376f12ad520b2ac11c4b855fdac17c8f75ef1bf5bac8297b1c81e9b94" alt="" @click="changeBGVideo">
-        </slide>
-        <slide :index="6">
-          <img src="https://img1.daumcdn.net/thumb/C300x430/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fmovie%2Fd0235b8e9c0048e4301f8c9c74da929863e33456" alt="" @click="changeSpain">
-        </slide>
-        <slide :index="7">
-          <img src="https://img1.daumcdn.net/thumb/C300x430/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fmovie%2Fd0643e2cd42252fb6d9018173e867fcd9612c115" alt="" @click="changeBGVideo">
-        </slide>
-        <slide :index="8">
-          <img src="https://youthassembly.or.kr/data/file/B62/thumb-3529829945_EwfyvjSH_8bbee4aeaee03b1a83a72b13f90c52c6bd0df789_805x1153.jpg" alt="" @click="changeSpain">
+
+    <!-- carousel poster -->
+    <div id="carousel" style="opacity: 0.8;">
+      <carousel-3d :width="180" :height="250" :display="9" :autoplay="false" @click="nextCard()">
+        <slide v-for="(movie, i) in movies" :key="i" :index="i" class="contentContainer">
+            <img :src="movie.poster_path" @click="[changeBGVideo(i)]" style="height: 100%; width: 100%;">
+            <div class="overlay" @click="[changeBGVideo(i)]">
+              <div class="textIncard" style="width=100%; height=100%;">
+                <br><br> 
+                <p style="white-space: nowrap; font-weight: bold;">{{movie.title}}</p>
+                <b-icon icon="badge-tm-fill" font-scale="1"></b-icon> Rate : {{ movie.vote_avg * 10 }}%<br><br> 
+                <b-icon icon="geo-alt" animation="cylon" font-scale="1" variant="success"></b-icon>  : {{ movie.country_name }}<br><br> 
+                <b-button pill size="sm" @click="[showCard(i), getDirector()]">크게 보기</b-button>
+                </div>
+            </div>
         </slide>
       </carousel-3d>
     </div>
-    <!-- Detail Card -->
-    <!-- show 태그 사용해서 처음에는 안 보이고, 포스터 클릭시 메소드 호출해서 videoURL 바꾸면서 id 넘기고 그 id 기반으로 세부내용/리뷰 출력 -->
-    <div id="detailCard">
-      <div class="scene scene--card">
-        <div
-          class="card"
-          @click="cardOne == 'start' ? (cardOne = 'flipped' ) : (cardOne = 'start' )"
-          v-bind:class="{ flipme: cardOne == 'flipped' }"
-          style="border-radius: 5%;"
-        >
-          <div class="card__face card__face--front" >포스터 + 평점 + 짧은 overview</div>
-          <div class="card__face card__face--back">유저 리뷰 + 리뷰 작성하러 가기</div>
+    
+    <!-- card -->
+    <div class="container" v-show="card_clicked">
+        <div class="row col-12">
+            <div style="justify-content: center; align-items: center;">
+                <div class="card card-flip h-100">
+                    <!-- card front -->
+                    <div class="card-front text-white bg-dark">
+                      <img :src="movies[this.cardIdx].poster_path" alt="" style="width: 300px; height: 100%; display: flex;" class="card-body col-sm-4">
+                      <div class="card-body col-sm-7" style="display: flex;">
+                        <div class="col" style="font-family: 'Do Hyeon', sans-serif; font-size: 30px;">
+                          <p class="card-title row-sm-3" style="font-family: 'Black Han Sans', sans-serif; font-size: 45px">{{movies[this.cardIdx].title}}</p><br>
+                          <p class="row-sm-2"><b-icon icon="badge-tm-fill"></b-icon> Rate : {{ movies[this.cardIdx].vote_avg * 10 }}%</p>
+                          <p class="row-sm-2"><b-icon icon="geo-alt" animation="cylon" font-scale="1" variant="success"></b-icon>  : {{ movies[this.cardIdx].country_name }}</p>
+                          <p class="row-sm-2"><b-icon icon="tags"></b-icon> : 
+                          <span v-for="(genre, idx) in genres[this.cardIdx]" :key="idx">
+                            <span>{{genre.name}} | </span>
+                          </span> 
+                          </p><br>
+                          <!-- img table -->
+                          <table class="table table-dark" style="font-size: 20px;">
+                          <tbody class="row-sm-2">
+                            <td>
+                              <tr><div v-if="movies[this.cardIdx].director_path"><b-avatar :src="movies[this.cardIdx].director_path" size="8rem"></b-avatar></div>
+                                <div v-else><b-avatar avatar icon="people-fill"></b-avatar></div>
+                              </tr>
+                              <tr>{{movies[this.cardIdx].director_name}}</tr>
+                              <tr>감독</tr>
+                            </td>
+                            <td>
+                              <tr><div v-if="movies[this.cardIdx].actor1_path"><b-avatar :src="movies[this.cardIdx].actor1_path" size="8rem"></b-avatar></div>
+                                <div v-else><b-avatar avatar icon="people-fill"></b-avatar></div>
+                              </tr>
+                              <tr>{{movies[this.cardIdx].actor1_name}}</tr>
+                              <tr>주연</tr>
+                            </td>
+                            <td>
+                              <tr><div v-if="movies[this.cardIdx].actor1_path"><b-avatar :src="movies[this.cardIdx].actor2_path" size="8rem"></b-avatar></div>
+                                <div v-else><b-avatar avatar icon="people-fill"></b-avatar></div>
+                              </tr>
+                              <tr>{{movies[this.cardIdx].actor2_name}}</tr>
+                              <tr>주연</tr>
+                            </td>
+                          </tbody>
+                        </table>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- card back -->
+                    <div class="card-back text-white bg-dark">
+                          <div class="card-title col-sm-5">
+                            <span style="font-size: 2rem; font-family: 'Black Han Sans', sans-serif; white-space: nowrap;">{{movies[this.cardIdx].title}}</span>
+                            <span class="card-dark"><br>{{movies[this.cardIdx].overview.substr(0,500)}}...</span>
+                          </div>
+                          <b-icon icon="x" animation="" variant="danger" font-scale="3" @click="showCard(cardIdx)" style="position:fixed; bottom:0; font-size:3rem"></b-icon>
+                              <b-button size="sm" class="mb-2" @click="showCard(cardIdx)" style="position:fixed; bottom:0; left:3rem; margin-bottom:0.5rem;">
+                                <b-icon icon="gear-fill" aria-hidden="true"></b-icon> READ MORE
+                              </b-button>
+                          <div class="card-body col-sm-7" style="display: flex;">
+                            <p class="card-title row-sm-3" style="font-family: 'Black Han Sans', sans-serif; font-size: 45px">{{movies[this.cardIdx].title}}</p><br>
+                            <p class="row-sm-2"><b-icon icon="badge-tm-fill"></b-icon> Rate : {{ movies[this.cardIdx].vote_avg * 10 }}%</p>
+                            <p class="row-sm-2"><b-icon icon="geo-alt" animation="cylon" font-scale="1" variant="success"></b-icon>  : {{ movies[this.cardIdx].country_name }}</p>
+                            <p class="row-sm-2"><b-icon icon="tags"></b-icon></p>
+                          </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
+
+
+
+
   </div>
 </template>
 
 <script>
 import { Carousel3d, Slide } from 'vue-carousel-3d';
+import axios from 'axios'
+import _ from 'lodash'
 
 export default {
   name: 'home',
   data: function () {
     return {
       videoUrl: null,
-      cardOne: "start",
+      movies: null,
+      card_clicked: false,
+      autoPlay: 'rel=0&autoplay=1&mute=1',
+      hideBar: '&modestbranding=1&autohide=1&showinfo=0&controls=0',
+      cardIdx: 0,
+      genres: [],
+      directors: [],
     }
   },
   components: {
     Carousel3d,
-    Slide
+    Slide,
   },
   methods: {
-    changeBGVideo: function () {
-      // 선택한 영화의 도시 선택
-      // const country = 'xxx'
-      // videoUrl을 해당 도시에 매칭
-      const autoPlay = 'autoplay=1&mute=1'
-      const hideBar = '&modestbranding=1&autohide=1&showinfo=0&controls=0'
-      this.videoUrl = 'https://www.youtube.com/embed/pMxgov6_5TA?'+ autoPlay + hideBar
+    getMovies: function () {
+      axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8000/movies/',
+      })
+        .then(res => {
+          this.movies = _.sampleSize(res.data, 9) 
+          console.log(this.movies)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    changeSpain: function () {
-      this.videoUrl = 'https://www.youtube.com/embed/0FXJUP6_O1w?'+'autoplay=1&mute=1'+'&modestbranding=1&autohide=1&showinfo=0&controls=0'
+    getGenres: function () {
+      for (let i = 0; i < 9; i++) {
+      axios({
+        method: 'get',
+        url: `http://127.0.0.1:8000/movies/${this.movies[i].id}/genres`,
+      })
+        .then(res => {
+          this.genres[i] = res.data
+          // console.log(this.genres)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
     },
-    onSlideStart() {
-        this.sliding = true
+    changeBGVideo: function (n) {
+      // countryUrl => store로 이전 예정
+      const countryUrl = {
+        브라질: "https://www.youtube.com/embed/uhcocK-td5E?",
+        콜롬비아: "https://www.youtube.com/embed/zpMZ9w07yuE?",
+        멕시코: "https://www.youtube.com/embed/ZEyShsnODjM?",
+        라스베이거스: "https://www.youtube.com/embed/Zv7xABrEOJk?",
+        워싱턴: "https://www.youtube.com/embed/G6r1HPeVFPQ?",
+        시카고: "https://www.youtube.com/embed/UWdfaNWThnA?",
+        캐나다: "https://www.youtube.com/embed/ArR-ctuKraE?",
+        칠레: "https://www.youtube.com/embed/BZuE6Q-RGus?",
+        일본: "https://www.youtube.com/embed/8ypRvNZhocU?",
+        홍콩: "https://www.youtube.com/embed/Blu_yCEFYvk?",
+        중국: "https://www.youtube.com/embed/NUlyJT3RxQA?",
+        인도: "https://www.youtube.com/embed/7bv_eqtkKqQ?",
+        호주: "https://www.youtube.com/embed/EXlLxQzK334?",
+        뉴질랜드: "https://www.youtube.com/embed/8jypK2U1AM0?",
+        영국: "https://www.youtube.com/embed/XkRFSnxXQ_w?",
+        프랑스: "https://www.youtube.com/embed/6lxg0NKZjOE?",
+        이탈리아: "https://www.youtube.com/embed/2b2gJu-g3qE?",
+        남아프리카공화국: "https://www.youtube.com/embed/sLK3D8lSsnU?",
+        소말리아: "https://www.youtube.com/embed/oXK0uXGFAVw?",
+        모로코: "https://www.youtube.com/embed/AU3gqNTgDZo?",
+        }
+      const target = this.movies[n].country_name
+      this.videoUrl = countryUrl[target] + this.autoPlay + this.hideBar
     },
-    onSlideEnd() {
-        this.sliding = false
+    logout: function () {
     },
-    logout: function (event) {
-      console.log(event)
-    }
+    showCard: function (i) {
+      this.card_clicked = !this.card_clicked
+      this.cardIdx = i
+    },
+    nextCard: function () {
+      this.card_clicked = false
+    },
   },
   computed: {
     newVid: function () {
-      console.log(this.videoUrl)
       return this.videoUrl
     }
   },
   created: function () {
-    this.videoUrl = 'https://www.youtube.com/embed/pMxgov6_5TA?autoplay=1&mute=1&modestbranding=1&autohide=1&showinfo=0&controls=0'
-    console.log(this.videoUrl)
+    this.videoUrl = 'https://www.youtube.com/embed/2Gg6Seob5Mg?' + this.autoPlay + this.hideBar
+    this.getMovies()
+  },
+  updated: function () {
+    this.getGenres()
+    },
   }
-}
   
 </script>
 
@@ -126,7 +212,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.7;
+  opacity: 1.0;
 }
 
 #wall {
@@ -140,59 +226,89 @@ export default {
   display: flex;
   justify-content: center;
 }
-/* flip card */
-.scene {
-  width: 50%;
-  height: 500px;
-  margin: 40px 0;
-  perspective: 600px;
 
-}
-
-.card {
-  width: 100%;
-  height: 100%;
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-  cursor: pointer;
+/* hover */
+/* .contentContainer {
   position: relative;
-}
+  width: 100%;
+} */
 
-.card__face {
-  border-radius: 5%;
-  position: absolute;
+.image {
+  display: block;
   width: 100%;
   height: 100%;
-  line-height: 260px;
-  color: white;
-  text-align: center;
-  font-weight: bold;
-  font-size: 10px;
-  backface-visibility: hidden;
 }
 
-.card__face--front {
-  background: rgb(219, 86, 77);
-}
-
-.card__face--back {
-  background: rgb(89, 23, 115);
-  transform: rotateY(180deg);
-}
-
-/* this style is applied when the card is clicked */
-.flipme {
-  transform: rotateY(180deg);
-}
-
-#detailCard {
-  margin: auto;
-  width: 50%;
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: black;
 }
-/* end of flip card */
+
+.contentContainer:hover .overlay {
+  opacity: 0.9;
+}
+
+.textIncard {
+  color: white;
+  font-size: 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+
+/* card */
+
+.card-flip > div {
+  backface-visibility: hidden;
+  transition: transform 300ms;
+  transition-timing-function: linear;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  display: flex;
+}
+
+.card-front {
+  transform: rotateY(0deg);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  position: absolute;
+  top: 0;
+}
+
+.card-flip:hover .card-front {
+  transform: rotateY(-180deg);
+}
+  
+.card-flip:hover .card-back {
+  transform: rotateY(0deg);
+}
+
+.container {
+  opacity: 0.9;
+}
+
+/* table */
+.table {
+  text-align: center;
+}
+
 
 </style>

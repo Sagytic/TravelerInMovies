@@ -22,6 +22,13 @@ class Movie(models.Model):
     user_vote_count = models.BigIntegerField(default=0)
     user_vote_avg = models.FloatField(default=0)
     country_name = models.CharField(max_length=100)
+    # aditional data
+    director_path = models.CharField(max_length=500)
+    director_name = models.CharField(max_length=100)
+    actor1_path = models.CharField(max_length=500)
+    actor1_name = models.CharField(max_length=100)
+    actor2_path = models.CharField(max_length=500)
+    actor2_name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title

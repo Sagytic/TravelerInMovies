@@ -1,4 +1,6 @@
+from django.db import reset_queries
 from django.shortcuts import get_list_or_404, get_object_or_404
+from rest_framework import response
 
 from accounts import serializers
 from .models import Movie, Review, Comment, Genre, Director, Actor, VoteRate
@@ -144,6 +146,34 @@ def comment_detail(request, comment_pk):
         
     return Response({ 'Unauthorized': '권한이 없습니다.'}, status=status.HTTP_403_FORBIDDEN)
 
+'''
+개별 영화 장르 조회
+'''
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def genres (request, movie_pk):
+    # 영화 선택
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    movieserializer = MovieSerializer(movie)
+    # 해당 영화에 포함되는 genre_id 저장(1~N개)
+    movie_genres = movieserializer.data.get('genres')    
+
+    # 저장된 리스트에 속하는 장르 objects get
+    get_genres = Genre.objects.filter(id__in=movie_genres)
+    serializer = GenreSerializer(get_genres, many=True)
+    
+    return Response(serializer.data)
+
+'''
+개별 영화 감독 조회
+'''
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def director(request, movie_pk):
+    get_movie = Movie.objects.get(pk=movie_pk)
+    directors = get_movie.directors.all()
+    serializer= DirectorSerializer(directors, many=True)
+    return Response(serializer.data)
 
 # 평점 매기는거는 나중에 
 def voterate(request, movie_pk):
