@@ -14,9 +14,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 # 유저 프로필 serialier 는 이미지를 url화하여 사용
 class UserProfileSerializer(serializers.ModelSerializer):
-    profile_image = serializers.ImageField(use_url=True)
-    background_image = serializers.ImageField(use_url=True)
-
+    profile_image = serializers.ImageField(use_url=True, required=False)
+    background_image = serializers.ImageField(use_url=True, required=False)
     class Meta:
         model = User
         fields = ('id','nickname', 'profile_image', 'background_image', 'rank_point')

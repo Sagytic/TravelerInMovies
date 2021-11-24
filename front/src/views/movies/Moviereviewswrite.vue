@@ -94,6 +94,7 @@ import axios from 'axios'
 import 'codemirror/lib/codemirror.css'; 
 import '@toast-ui/editor/dist/toastui-editor.css'; 
 import { Editor } from '@toast-ui/vue-editor';
+import { mapState, mapActions} from 'vuex'
 
 export default {
   name: 'Moviedetail',
@@ -112,6 +113,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+			// 'loginGetToken',
+      'userRankpointUpdate',
+      'getReviewsGenre',
+      'getReviewsCountry',
+      'getReviews',
+      'getReviewsMovieInfo',
+		]),
     createAction() {
       this.review.movie_id = this.movie.id
       var content = this.$refs.toastuiEditor.invoke("getHTML");
@@ -122,13 +131,21 @@ export default {
         // axios는 JSON.stringify를 자체적으로 해준다. 즉 data로 
         // 넘기는 값은 JSON.stringify를 해줄 필요가 없다.
         method: 'post',
-        url: 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews',
+        url: 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews/',
         headers: this.tokenHeader,
         data: this.review
       })
         .then(res => {
           console.log(res)
           this.$router.push({ name: 'Moviedetail' })
+          // this.rank_point += 10
+          const formData = new FormData()
+          formData.append('rank_point', this.rank_point+10)
+          this.userRankpointUpdate(formData)
+          this.getReviewsGenre()
+          this.getReviewsCountry()
+          this.getReviews()
+          this.getReviewsMovieInfo()
         })
         .catch(err => {
           // 에러출력
@@ -166,5 +183,10 @@ export default {
         console.log(err)
       })
   },
+  computed: {
+    ...mapState([
+      'rank_point'
+    ]),
+  }
 }
 </script>

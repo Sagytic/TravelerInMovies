@@ -15,4 +15,8 @@ urlpatterns = [
     path('profile/<int:user_pk>/reviews/country/', views.reviews_country, name='user_reviews_country'),
     # 유저가 작성한 리뷰의 영화 데이터 조회 url
     path('profile/<int:user_pk>/reviews/movies/', views.reviews_movies, name='user_reviews_movies'),
+
+    # 유저가 작성한 리뷰 영화의 장르별, 나라별 영화 목록을 조회 url,
+    path('profile/<int:user_pk>/reviews/genre_country_movies/', views.genre_country_movies, name='user_genre_movies'),
+
 ]

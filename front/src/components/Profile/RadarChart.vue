@@ -1,18 +1,19 @@
 <script>
 import {Radar} from 'vue-chartjs'
-// import {mapState} from 'vuex'
+
 export default {
   extends: Radar,
   props: {
-    dataset: Object
+    dataset: Object,
   },
   data () {
+
     return {
       dataCollection: {
         labels: Object.keys(this.dataset),
         datasets: [
           {
-              label: 'Numbers',
+              label: '영화 수',
               data: Object.values(this.dataset),
               fill: true,
               backgroundColor: "rgba(54, 162, 235, 0.2)",
@@ -36,20 +37,68 @@ export default {
         ]
       },
       chartOptions: {
+        // hover: {
+        //  onHover: function(evt, item) { 
+        // if (item.length) {
+        //     console.log(item[0]._index);
+        //     }
+        //   }
+        // },
+        title: {
+                display: false,
+                text: this.title,
+                align: 'center',
+                font: {
+                  size: 15,
+                },
+                position: 'bottom',
+                // padding: {
+                //   top: 0,
+                //   bottom: 0,
+                // }
+            },
         tooltips: {
           callbacks: {
-            title: (tooltipItem, data) => data.labels[tooltipItem[0].index]
+            title: (tooltipItem, data) => data.labels[tooltipItem[0].index],
+            // label: function (tooltipItem, data) {
+            //   console.log(tooltipItem, data)
+            //   console.log(this)
+            // }
+            //   console.log(data, this)
+            //   return tooltipItem.index
+            //   // console.log(tooltipItem.index, data)
+            //   // window.hidx = tooltipItem.index
+            //   // console.log(hidx)
+            //   // window.getChartHoverIdx(tooltipItem.index)
+            //   // this.$store.dispatsch('getChartHoverIdx',tooltipItem._index)
+            // },
           }
         },
         responsive: true,
+
         legend: {
           display: false,
+
         },
+  
+        // onClick : function (evt, item) {
+
+        //   // console.log(this.hidx)
+        //   if (item.length) {
+        //     console.log('pointLabel click',evt, item)
+        //     // console.log(item[0]._index)
+        //     // this.getChartHoverIdx(item[0]._index)
+        //   }
+          
+        // },
+        
 
         scale: {
           pointLabels: {
             label: 'here',
-            fontSize: 13,
+            fontSize: 14,
+            fontColor: "blue",
+            fontStyle: "bold",
             fontFamily: "'Raleway', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
           },
           ticks: {
@@ -87,10 +136,23 @@ export default {
     }
   },
 
+
   mounted() {
-    this.renderChart(this.dataCollection, this.chartOptions)
+    this.renderChart(this.dataCollection, this.chartOptions, {responsive: true, maintainAspectRatio: false, onClick:this.handle})
+    
+  },
+  methods: {
+    handle (point, event) {
+      console.log(event)
+      const item = event[0]
+      this.$emit('on-receive', {
+        index: item._index,
+        value: item._index
+      })
+    }
   },
 }
+
 
 </script>
 

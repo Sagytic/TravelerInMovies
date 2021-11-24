@@ -1,8 +1,9 @@
 from django.db import reset_queries
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import response
 
-from accounts import serializers
+from django.core import serializers
 from .models import Movie, Review, Comment, Genre, Director, Actor, VoteRate
 from .serializers import UserProfileSerializer, MovieListSerializer, MovieSerializer, ReviewSerializer, CommentSerializer, GenreSerializer, DirectorSerializer, ActorSerializer, VoteRateSerializer
 from django.contrib.auth import get_user_model
@@ -181,3 +182,16 @@ def director(request, movie_pk):
 def voterate(request, movie_pk):
     pass
 
+
+'''
+나라별 랜덤 영화 조회
+'''
+import random
+@api_view(['GET'])
+# @permission_classes([AllowAny])
+def randomMovie(request, country_name):
+    # DB에서 랜덤하게 하나 뽑아줌!
+    movie = Movie.objects.filter(country_name=country_name).order_by('?')[:1]
+    # movie = random.sample(movies, 1)
+    moviedata = serializers.serialize('json', movie)
+    return HttpResponse(moviedata, content_type="text/json-comment-filtered")

@@ -155,4 +155,31 @@ def reviews_movies(request, user_pk):
     return JsonResponse(movieList, safe=False)           
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def genre_country_movies(request, user_pk):
+
+    countries = ['브라질', '콜롬비아', '멕시코', '라스베이거스', '워싱턴', '시카고', '캐나다', '칠레', '일본', 
+    '홍콩', '중국', '인도', '호주', '뉴질랜드', '영국', '프랑스', '이탈리아', '남아프리카공화국', '소말리아', '모로코']
+    countries_dict = {}
+    for i in range(len(countries)):
+        countries_dict[countries[i]] = i
+
+    moviesList_genre = [[] for _ in range(19)] # 장르 개수 19개
+    moviesList_country = [[] for _ in range(20)] # 나라 개수 20개
     
+
+    if request.method == 'GET':
+        movieIds = [review['movie_id'] for review in Review.objects.filter(user__pk=user_pk).order_by('-pk').values()]
+        for movieId in movieIds:
+            movie = Movie.objects.filter(id=movieId).values()[0] # get Movie object
+            moviesList_country[countries_dict[movie['country_name']]].append(movie['title'])
+            genreIds = [genre['id'] for genre in Genre.objects.filter(movies__id=movie['id']).values()]
+            for genreId in genreIds: # 1~19 -> 0 -> 18
+                moviesList_genre[genreId-1].append(movie['title'])
+
+    moviesList_dict = {}
+    moviesList_dict['genre'] = moviesList_genre
+    moviesList_dict['country'] = moviesList_country
+
+    return JsonResponse(moviesList_dict)           
