@@ -122,7 +122,7 @@ export default {
         // axios는 JSON.stringify를 자체적으로 해준다. 즉 data로 
         // 넘기는 값은 JSON.stringify를 해줄 필요가 없다.
         method: 'post',
-        url: 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews',
+        url: 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews/',
         headers: this.tokenHeader,
         data: this.review
       })

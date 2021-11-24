@@ -48,6 +48,13 @@ class MovieListSerializer(serializers.ModelSerializer):
             'actor1_name',
             'actor2_path',
             'actor2_name',
+            'actor3_path',
+            'actor3_name',
+            'actor4_path',
+            'actor4_name',
+            'actor5_path',
+            'actor5_name',            
+            'backdrop_path',
         )
 
 # 단일 영화 Read용
