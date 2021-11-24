@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <div>
-      <b-navbar toggleable="lg" type="dark" variant="dark">
+      <b-navbar toggleable="lg" type="dark" variant="black" style="padding:0;">
         <b-navbar-nav>
-          <b-nav-item :to="{ name: 'Home' }"><span style="color:pink"> Traveler in Movies </span></b-nav-item>
+          <!-- <span style="color:white"> Traveler in Movies </span> -->
+          <b-nav-item :to="{ name: 'Home' }"><img src="@/assets/TimbyLogoster-removebg.png" alt="" style="width:7.5rem;"></b-nav-item>
         </b-navbar-nav>
           <!-- Right aligned nav items -->
           <span v-if="isLogin">
@@ -22,8 +23,13 @@
             <b-navbar-nav class="ml-auto">
               <b-nav-item :to="{ name: 'Movielist' }">Movielist</b-nav-item>
             </b-navbar-nav>
-      <div v-if="isLogin" style="color:white; margin-left:auto; margin-right:20px;">
-        {{username}} 님 반갑습니다~
+      <div style="color:white; margin-left:auto; margin-right:20px;">
+        <span v-if="isLogin">
+          {{nickname()}} 님의 선호도를 반영한 추천 목록입니다🥰
+        </span>
+        <span v-else>
+          무작위로 추천된 9개의 영화로 떠나볼까요?🥰
+        </span>
       </div>
       </b-navbar>
     </div>
@@ -34,7 +40,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 export default {
   name: 'App',
   data: function () {
@@ -52,6 +58,19 @@ export default {
       this.$router.push({ name: 'Login' })
       // 로그아웃하며 토큰 삭제
     },
+    ...mapState([
+      'nickname',
+    ]),
+  },
+  created: function () {
+    // 로그인하며 토큰 저장
+    const token = localStorage.getItem('jwt')
+    const currentUser = localStorage.getItem("username")
+
+    if (token) {
+      this.isLogin = true
+      this.username = currentUser
+    }
   },
   created: function () {
     // 로그인하며 토큰 저장
@@ -874,4 +893,289 @@ section {
 width:100%;
 }
 
+/* 프로필 */
+
+.container2 {
+	position:relative;
+	width:1080px;
+	height:1200px;
+	padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+	padding-top:15px;
+}
+.absoluteid1 {
+	position:absolute;
+	margin-left:230px;
+	margin-top:3px;
+	width: 205px;
+  height: 113px;
+	border:1px solid #dbdbdb;
+	background:white;
+	border-radius:5px;
+	display:none;
+	z-index:100;
+}
+.absoluteid1-1 {
+	width:100%;
+	height:56px;
+	padding: 17px 35px 10px 15px;	
+	border-bottom:1px solid #dbdbdb;
+}
+.absoluteid1-2 {
+	width:100%;
+	height:56px;
+	padding: 17px 35px 10px 15px;
+}
+.absoluteid1-1:hover {
+	border-radius:5px;	
+	color:#3aa3e3;
+	background:#edf6fc;
+	transition: 0.1s linear !important;
+    -webkit-transition: 0.1s linear !important;
+}
+.absoluteid1-2:hover {
+
+	height:55px;
+	color:#3aa3e3;
+	background:#edf6fc;
+	transition: 0.1s linear !important;
+    -webkit-transition: 0.1s linear !important;
+}
+/************************왼쪽 메뉴바 ********************************/
+
+.container2-1 {
+	float:left;
+	width:257px;
+	height:690px;
+	margin-right:15px;
+}
+.container2-1-1 {
+	width:100%;
+	height:295px;
+	border:1px solid #dbdbdb;
+	margin-bottom:15px;
+	background:white;
+	border-radius:5px;
+}
+.container2-1-1-1 {
+	width:100%;
+	height:86px;
+	border-bottom:1px solid #dbdbdb;
+}
+.container2-1-1-2 {
+	width:100%;
+	height:208px;
+	border-bottom:1px solid #dbdbdb;
+}
+.container2-1-1-3 {
+	width:100%;
+	height:152px;
+}
+.container2-1_box0 {
+	width:100%;
+	height:86px;
+	padding: 10px 35px 10px 15px;
+}
+.container2-1_box0_img {
+	float:left;
+	width:38px;
+	height:38px;
+	margin-right:25px;
+	padding: 10px;
+}
+.container2-1_box1 {
+	width:100%;
+	height:56px;
+	padding: 20px 35px 10px 15px;
+}
+.container2-1_box2 {
+	width:100%;
+	height:30px;
+	padding: 10px 15px;
+	font-size:12px;
+	color:#ff9696;
+}
+.container2-1_box2 img {
+	margin-bottom: 2px;
+	margin-left:3px;
+	width:40px;
+	height:20px;
+}
+.container2-1_box_id {
+	margin-top:3px;
+}
+.container2-1-2 {
+	width:100%;
+	height:170px;
+	border:1px solid #dbdbdb;
+	background:white;
+	border-radius:3px;
+}
+.container2-1_box0:hover {
+	height:85px;
+	color:#3aa3e3;
+	background:#edf6fc;
+	transition: 0.1s linear !important;
+    -webkit-transition: 0.1s linear !important;
+}
+.container2-1_box1:hover {
+	color:#3aa3e3;
+	background:#edf6fc;
+	transition: 0.1s linear !important;
+    -webkit-transition: 0.1s linear !important;
+}
+
+/********************* 오른쪽 메인 컨텐츠 ***************************/
+
+.container2-2 {
+	float:left;
+	width:772px;
+	border:1px solid #dbdbdb;
+	background:white;
+	border-radius:3px;
+}
+.container2-2-1 {
+	width:100%;
+	height:66px;
+	border-bottom:1px solid #dbdbdb;
+}
+.container2-2-1-1 {
+	float:left;
+	padding-top:12px;
+	margin-left:20px;
+}
+.container2-2-1-2 {
+	float:right;
+	margin:15px;
+	margin-right:40px;
+}
+
+.container2-2-2 {
+	width:100%;
+	height:234px;
+	border-bottom:1px solid #dbdbdb;
+	padding:20px;
+}
+.container2-2-2-1 {
+	float:left;
+	margin-top:30px;
+	margin-right:20px;
+}
+.container2-2-2-1 img{
+	width:130px;
+	height:130px;
+	border:1px solid #dbdbdb;		
+	border-radius:100px;
+}
+.container2-2-2-2 {
+	margin-top:20px;
+	margin-bottom:5px;
+}
+.container2-2-2-2 a {
+	color:#337ab7;
+}
+.container2-2-2-2 a:hover {
+	color:#00437c;
+	text-decoration: underline; 
+}
+.container2-2-2-3 {
+	margin-bottom:10px;
+}
+/************************ 프로필 추가변경 *****************************/
+
+.container2-2-2 {
+	width:100%;
+	height:749px;
+	padding:0px;
+	border:0px;
+	font-size:13px;
+} 
+.container2-2-2-1 {
+	float:left;
+	width:100%;
+	height:150px;
+	border-bottom:1px solid #dbdbdb;
+	margin:0px;
+	padding:20px;
+}
+
+.container2-2-2-1-p {
+	float:left;
+	width:100%;
+	height:200px;
+	border-bottom:1px solid #dbdbdb;
+	margin:0px;
+	padding:20px;
+}
+.container2-2-2-1 div:first-child {
+	margin-bottom: 10px;
+	font-size:17px;	
+}
+
+.container2-2-2-1 input {
+	width:90%;
+	height:40px;
+	border:1px solid #ff9696;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+.container2-2-2-1 button {
+	width:50px;
+	height:33px;
+	background: #ff9696;
+	color:white;
+	border:0px;
+	border-radius: 5px;
+}
+.container2-2-2-2 {
+	float:left;
+	width:100%;
+	height:350px;
+	border-bottom:1px solid #dbdbdb;
+	margin:0px;
+	padding:20px;
+}
+.container2-2-2-2 div:first-child {
+	margin-bottom: 10px;
+	font-size:17px;
+}
+.container2-2-2-2 button {
+	width:50px;
+	height:33px;
+	background: #ff9696;
+	color:white;
+	border:0px;
+	border-radius: 5px;
+}
+.icon1-2 {
+	width:100%;
+	height:83%;
+	background-color: #f3f3f3;
+
+}
+.icon1-2 img {
+	width:100px;
+	height:100px;
+	margin-left:42%;
+	margin-top:40px;
+	background:gray;
+	border-radius: 100px;
+	border:0px;	
+}
+.icon1-2 input {
+	margin-top:20px;
+	margin-left:38%;
+}
+.icon1-2 button {
+	width:100px;
+	margin-top:20px;
+	margin-left:42%;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
 </style>

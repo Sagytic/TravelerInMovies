@@ -3,9 +3,10 @@ from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import response
 
 from accounts import serializers
-from .models import Movie, Review, Comment, Genre, Director, Actor, VoteRate
+from .models import Movie, Preference, Review, Comment, Genre, Director, Actor, VoteRate
 from .serializers import UserProfileSerializer, MovieListSerializer, MovieSerializer, ReviewSerializer, CommentSerializer, GenreSerializer, DirectorSerializer, ActorSerializer, VoteRateSerializer
 from django.contrib.auth import get_user_model
+
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -16,6 +17,12 @@ from django.core.paginator import Paginator
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
+
+# recommend algorithm
+import random
+import collections
+
 
 # 유저 모델 
 User = get_user_model()
@@ -70,6 +77,77 @@ def movie_list_popular(request):
     data = serializer.data
     data.append({'total_pages': paginator.num_pages, 'total_count': paginator.count,})
     return Response(data)
+
+'''
+메인 페이지(로그인 유저 선호도 기반)
+'''
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def movie_recommend(request, username):
+    # 유저 선호한 나라 3개 목록 저장
+    personal = User.objects.get(username=username)
+    personal_pref = personal.user_preference
+
+    # 마지막 공백 제거하며 리스트 형태로 저장 (['LA', 'UK', 'SouthAfrica'])
+    personal_pref = personal_pref.split('.')[0:3]
+
+    # 첫번째로 고른 나라와 매칭되는 나라 중 가장 similar 값이 높은 순으로 2개 출력하여 저장
+    first_pref = Preference.objects.filter(matching__startswith=personal_pref[0]).order_by('-similar').first()
+    second_pref = Preference.objects.filter(matching__startswith=personal_pref[0]).order_by('-similar')[1]
+
+    # 매칭된 나라 이름만 저장
+    first = first_pref.matching.split('_')[1]
+    second = second_pref.matching.split('_')[1]
+    new_nation_list = [personal_pref[0], personal_pref[1], personal_pref[2], first, second]
+
+    # 선호순위 1, 2, 3순위 / 유저들의 선호도를 반영한 순위 1, 2위 순으로 가중치를 두고 choice
+    recommend = random.choices(new_nation_list, weights=[3, 2, 1, 1, 1], k=9)
+    rec = collections.Counter(recommend)
+    count1 = recommend.count(personal_pref[0])
+    count2 = recommend.count(personal_pref[1])
+    count3 = recommend.count(personal_pref[2])
+    count4 = recommend.count(first)
+    count5 = recommend.count(second)
+    print(count1, count2, count3, count4, count5)
+    convert = {
+        'Brazil':'브라질',
+        'Colombia':'콜롬비아',
+        'Mexico':'멕시코',
+        'LA':'라스베이거스',
+        'Washington':'워싱턴',
+        'Chicago':'시카고',
+        'Canada':'캐나다',
+        'Chile':'칠레',
+        'Japan':'일본',
+        'Hongkong':'홍콩',
+        'China':'중국',
+        'India':'인도',
+        'Australia':'호주',
+        'NewZleand':'뉴질랜드',
+        'UK':'영국',
+        'France':'프랑스',
+        'Italy':'이탈리아',
+        'SouthAfrica':'남아프리카공화국',
+        'Somalia':'소말리아',
+        'Moroco':'모로코',
+    }
+
+    reco_movie1 = Movie.objects.filter(country_name=convert[personal_pref[0]]).order_by('-vote_avg')[0:count1]
+    if count2:
+        reco_movie2 = Movie.objects.filter(country_name=convert[personal_pref[1]]).order_by('-vote_avg')[0:count2]
+        movies = reco_movie1 | reco_movie2
+    if count3:
+        reco_movie3 = Movie.objects.filter(country_name=convert[personal_pref[2]]).order_by('-vote_avg')[0:count3]
+        movies = movies | reco_movie3
+    if count4:
+        reco_movie4 = Movie.objects.filter(country_name=convert[first]).order_by('-vote_avg')[0:count4]
+        movies = movies | reco_movie4
+    if count5:
+        reco_movie5 = Movie.objects.filter(country_name=convert[second]).order_by('-vote_avg')[0:count5]
+        movies = movies | reco_movie5
+    print(movies)
+    serializer = MovieListSerializer(movies, many=True)
+    return Response(serializer.data)
 
 '''
 단일 영화 조회

@@ -1,10 +1,11 @@
 import os
+from random import *
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'PJT_final.settings')
 import django
 django.setup()
 import requests
-from movies.models import Movie, Genre, Actor, Director
+from movies.models import Movie, Genre, Actor, Director, Preference
 
 # 국가별 영화 목록 가져오기
 movie_data = {
@@ -30,10 +31,20 @@ movie_data = {
     '모로코': ['Mission: Impossible – Rogue Nation','The Bourne Ultimatum', 'Allied', 'Escape Plan', 'John Wick Chapter 3 – Parabellum'],
 }
 
+
 # movie_data = {
 #     '브라질': ['hulk','jungle cruise', 'The Mission', 'Mechanic: Resurrection', 'Out of the Shadows', 'The Lost City of Z', 'Rio', 'Rio 2', 'Woman on Top', 'The Rundown', 'Bacurau'],
 # }
-
+nation = [
+    'Brazil', 'Colombia', 'Mexico', 'LA', 'Washington', 'Chicago', 'Canada', 'Chile', 'Japan', 'Hongkong', 'China', 'India', 'Australia', 'NewZleand', 'UK', 'France', 'Italy', 'SouthAfrica', 'Somalia', 'Moroco'
+]
+def create_preference():
+    for i in nation:
+        for j in nation:
+            if i!=j:
+                makeMatcing = f'{i}_{j}'
+                pref_obj = Preference(matching=makeMatcing, similar=randint(1, 500))
+                pref_obj.save()        
 
 api_key = '4b04a84decc47f820d768b6bc7d5b378'
 
@@ -59,6 +70,15 @@ def get_movie(movie_data):
             url_credits = f'https://api.themoviedb.org/3/movie/{movieId}/credits?api_key={api_key}&language=ko-KR'
             credits = requests.get(url_credits).json()
             actor1_path = ''
+            actor2_path = ''
+            actor3_path = ''
+            actor4_path = ''
+            actor5_path = ''
+            actor1_name = ''
+            actor2_name = ''
+            actor3_name = ''
+            actor4_name = ''
+            actor5_name = ''
             
             title = movie['title']
             poster_path = 'https://image.tmdb.org/t/p/w500'+movie['poster_path']
@@ -68,19 +88,33 @@ def get_movie(movie_data):
             genre_ids = movie['genre_ids']
             overview = movie['overview']
             country_name = nation
+            if movie['backdrop_path']:
+                backdrop_path = img_path+movie['backdrop_path']
+            else:
+                backdrop_path = 'None'
+
             # actor for movies
-            for actor in credits['cast'][:2]:
+            for actor in credits['cast'][:5]:
                 if actor['profile_path']:
-                    if actor1_path:
-                        actor2_path = img_path + actor['profile_path']
-                        actor2_name = actor['original_name']
-                    else: 
+                    if not actor1_path:
                         actor1_path = img_path + actor['profile_path']
                         actor1_name = actor['original_name']
+                    elif not actor2_path:
+                        actor2_path = img_path + actor['profile_path']
+                        actor2_name = actor['original_name']
+                    elif not actor3_path:
+                        actor3_path = img_path + actor['profile_path']
+                        actor3_name = actor['original_name']
+                    elif not actor4_path:
+                        actor4_path = img_path + actor['profile_path']
+                        actor4_name = actor['original_name']
+                    elif not actor5_path:
+                        actor5_path = img_path + actor['profile_path']
+                        actor5_name = actor['original_name']
                 else:
                     pass
             # director for movies
-            for crew in  credits['crew']:
+            for crew in credits['crew']:
                 if crew['job'] == 'Director':
                     if crew['profile_path']:
                         director_path = img_path + crew['profile_path']
@@ -94,7 +128,7 @@ def get_movie(movie_data):
 
             print(title, '-----')
             # Movie에 데이터 추가
-            movie_instance = Movie(title=title, overview=overview, poster_path=poster_path, popularity=popularity, vote_count= vote_count, vote_avg = vote_avg, country_name=country_name, director_path=director_path, actor1_path=actor1_path, actor2_path=actor2_path, actor1_name=actor1_name, actor2_name=actor2_name, director_name=director_name)
+            movie_instance = Movie(title=title, overview=overview, poster_path=poster_path, popularity=popularity, vote_count= vote_count, vote_avg = vote_avg, country_name=country_name, director_path=director_path, director_name=director_name, actor1_path=actor1_path, actor1_name=actor1_name, actor2_path=actor2_path, actor2_name=actor2_name, actor3_path=actor3_path, actor3_name=actor3_name, actor4_path=actor4_path, actor4_name=actor4_name, actor5_path=actor5_path, actor5_name=actor5_name, backdrop_path=backdrop_path)
             movie_instance.save()
 
             # 장르와 N:M 관계 추가
@@ -135,6 +169,7 @@ def get_movie(movie_data):
 
 get_genre(genre_url)
 get_movie(movie_data)
+create_preference()
 
 # print(Genre.objects.get(id=4).movies.all().count())
 # print(Movie.objects.get(id=4).genres)

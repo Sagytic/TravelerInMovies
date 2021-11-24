@@ -9,6 +9,9 @@ urlpatterns = [
     path('rate/',views.movie_list_rate,name='movie_list_rate'),
     path('popular/',views.movie_list_popular,name='movie_list_popular'),
     path('<int:movie_pk>', views.movie_detail, name='movie_detail'),
+
+    # 추천 알고리즘 기분 영화 목록
+    path('recommend/<str:username>/', views.movie_recommend, name='movie_recommend'),
     
     # 리뷰 목록, 세부 리뷰 url
     path('<int:movie_pk>/reviews/', views.review_list, name='review_list'),
