@@ -31,4 +31,8 @@ urlpatterns = [
     # 평점 url
     path('<int:movie_pk>/voterate/', views.voterate, name='voterate'),
 
+    # 나라별 임의 영화 호출 url
+    path('<country_name>/', views.randomMovie, name="randomMovie"),
+
+
 ]

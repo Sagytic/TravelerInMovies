@@ -82,6 +82,16 @@ export default {
       this.username = currentUser
     }
   },
+  created: function () {
+    // 로그인하며 토큰 저장
+    const token = localStorage.getItem('jwt')
+    const currentUser = localStorage.getItem("username")
+
+    if (token) {
+      this.isLogin = true
+      this.username = currentUser
+    }
+  },
   updated: function () {
     // 로그인하며 토큰 저장
     const token = localStorage.getItem('jwt')

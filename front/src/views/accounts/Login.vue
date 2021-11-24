@@ -48,6 +48,7 @@ export default {
       'getReviewsCountry',
       'getReviews',
       'getReviewsMovieInfo',
+      'getReviewsMovieGenreCountry',
 		]),
 
     login: function () {
@@ -69,6 +70,7 @@ export default {
           this.getReviewsCountry()
           this.getReviews()
           this.getReviewsMovieInfo()
+          this.getReviewsMovieGenreCountry()
           this.$router.push({ name: 'Home' })
           // commit("SET_TOKEN", res.data.token)
           

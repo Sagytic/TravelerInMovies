@@ -21,6 +21,9 @@ export default new Vuex.Store({
     countries_cnt: {},
     reviews: [],
     review_movies: [],
+    review_movies_genre: [],
+    review_movies_country: [],
+    hover_idx: 0,
     usernamei: localStorage.getItem("username")
   },
   getters: {
@@ -61,6 +64,16 @@ export default new Vuex.Store({
     },
     GET_REVIEWS_MOVIE_INFO: function (state, data) {
       state.review_movies = data
+    },
+    RANKPOINT_UPDATE: function (state, data) {
+      state.rank_point = data.rank_point
+    },
+    GET_REVIEWS_MOVIE_GENRE_COUNTRY: function (state, data) {
+      state.review_movies_genre = data.genre
+      state.review_movies_country = data.country
+    },
+    GET_CHART_HOVER_IDX: function(state, data) {
+      state.hover_idx = data
     }
   },
   actions: {
@@ -159,6 +172,40 @@ export default new Vuex.Store({
         .catch( err => {
           console.log(err)
         })
+    },
+    userRankpointUpdate: function ({commit, getters}, formdata) {
+      axios({
+        method: "put",
+        url: `${SERVER.URL}/accounts/profile/`,
+        data: formdata,
+        headers: getters.config,
+
+      })
+        .then( res => {
+          commit("RANKPOINT_UPDATE", res.data)
+        })
+        .catch( err => {
+          swal(err.response.data.error, {
+            dangerMode: true,
+          })
+        })
+    },
+    getReviewsMovieGenreCountry: function ({commit, getters}) {
+      axios({
+        method: "get",
+        url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/genre_country_movies/`,
+        headers: getters.config,
+      })
+        .then( res => {
+          commit("GET_REVIEWS_MOVIE_GENRE_COUNTRY", res.data)
+        })
+        .catch( err => {
+          console.log(err)
+        })
+    },
+    getChartHoverIdx: function({commit}, hover_idx) {
+      console.log(hover_idx)
+      commit("GET_CHART_HOVER_IDX", hover_idx)
     }
   },
   modules: {

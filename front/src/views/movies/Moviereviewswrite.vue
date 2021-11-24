@@ -63,9 +63,10 @@ import axios from 'axios'
 import 'codemirror/lib/codemirror.css'; 
 import '@toast-ui/editor/dist/toastui-editor.css'; 
 import { Editor } from '@toast-ui/vue-editor';
+import { mapState, mapActions} from 'vuex'
 import VueCircleSlider from 'vue-circle-slider'
-
 Vue.use(VueCircleSlider)
+
 
 export default {
   name: 'Moviedetail',
@@ -85,6 +86,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+			// 'loginGetToken',
+      'userRankpointUpdate',
+      'getReviewsGenre',
+      'getReviewsCountry',
+      'getReviews',
+      'getReviewsMovieInfo',
+		]),
     createAction() {
       this.review.movie_id = this.movie.id
       this.review.rank = this.sliderValue
@@ -103,6 +112,14 @@ export default {
         .then(res => {
           console.log(res)
           this.$router.push({ name: 'Moviedetail' })
+          // this.rank_point += 10
+          const formData = new FormData()
+          formData.append('rank_point', this.rank_point+10)
+          this.userRankpointUpdate(formData)
+          this.getReviewsGenre()
+          this.getReviewsCountry()
+          this.getReviews()
+          this.getReviewsMovieInfo()
         })
         .catch(err => {
           // 에러출력
@@ -140,5 +157,10 @@ export default {
         console.log(err)
       })
   },
+  computed: {
+    ...mapState([
+      'rank_point'
+    ]),
+  }
 }
 </script>
