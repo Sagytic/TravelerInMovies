@@ -29,6 +29,13 @@ class Movie(models.Model):
     actor1_name = models.CharField(max_length=100)
     actor2_path = models.CharField(max_length=500)
     actor2_name = models.CharField(max_length=100)
+    actor3_path = models.CharField(max_length=500)
+    actor3_name = models.CharField(max_length=100)
+    actor4_path = models.CharField(max_length=500)
+    actor4_name = models.CharField(max_length=100)        
+    actor5_path = models.CharField(max_length=500)
+    actor5_name = models.CharField(max_length=100)
+    backdrop_path = models.CharField(max_length=500)
 
     def __str__(self):
         return self.title
@@ -66,6 +73,7 @@ class Review(models.Model):
         return self.title
 
 class Comment(models.Model):
+    # foreignKey로 넘겨줄 때 부모 클래스에 _set 으로 해당 값을 넘겨준다 review_set 이런 식으로 Review 클래스에 값이 추가된다.
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)    
     content = models.TextField()
@@ -82,6 +90,8 @@ class VoteRate(models.Model):
     rate = models.FloatField()
 
 
-
+class Preference(models.Model):
+    matching = models.TextField(max_length=100)
+    similar = models.IntegerField()
 
 

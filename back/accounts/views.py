@@ -8,7 +8,7 @@ from .serializers import UserSerializer, UserProfileSerializer, UserReviewSerial
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.contrib.auth import get_user_model
 
-from movies.models import Review, Movie, Genre
+from movies.models import Review, Movie, Genre, Preference
 from movies.serializers import MovieSerializer, GenreSerializer
 
 
@@ -33,6 +33,37 @@ def signup(request):
     # 닉네임 일치여부 검사
     if User.objects.filter(nickname=request.data.get('nickname')).exists():
         return Response({'error': '이미 존재하는 별명입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # 선택 국가(도시) 3개 여부 검사
+    all_str = request.data.get('user_preference')
+    print(all_str)
+    word = ''
+    ans = []
+    for a in all_str:
+        if a == '.':
+            ans.append(word)
+            word = ''
+        elif a == ' ':
+            pass
+        else:
+            word += a
+
+    if len(ans) != 3:
+        return Response({'error': '3가지 국가(도시)를 선택했는지 다시 확인해주세요😫'}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        first = ans[0]
+        second = ans[1]
+        third = ans[2]
+        first_pref = f'{first}'+'_'+f'{second}'
+        second_pref = f'{first}'+'_'+f'{third}'
+        first_pref_update = Preference.objects.get(matching=first_pref)
+        first_pref_update.similar += 5
+        second_pref_update = Preference.objects.get(matching=second_pref)
+        second_pref_update.similar += 2
+        first_pref_update.save()
+        second_pref_update.save()
+
+
 
     # UserSerializer를 통해 사용자가 넘겨준 데이터 직렬화
     serializer = UserSerializer(data=request.data)
