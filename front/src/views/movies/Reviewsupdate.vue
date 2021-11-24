@@ -1,17 +1,12 @@
 <template>
   <div>
-    <!-- <section>
-			<button type="button" name="button" class="ac-sub-go-top"><i class="fas fa-arrow-up"></i></button>
-			<div class="clearboth"></div>
-		</section> -->
-
 		<section>
 			<div class="container">
 				<div class="project-head">
 					<div class="head-info">
 						<div class="row">
-							<div class="col-md-4" style="padding-top:30px;">
-                <a :href="movie.poster_path" target="_blank" style="margin-left:75px;">
+							<div class="col-md-4">
+                <a :href="movie.poster_path" target="_blank">
                 <img class="projectimg" :src="movie.poster_path" style="width:300px;">
                 
                 </a>
@@ -56,24 +51,9 @@
     <section class="content-section">
       <div class="container">
         <div class="row">
-          <div class="col-md-12">
-            <div class="project-content mt40">
-              <div class="rmfTmrldiv">
-                <div class="pull-left">
-                  <img class="user-photo" src="../../assets/user-account.png" >
-                  <span v-if="isLogin">{{username}}님 영화에 대한 리뷰를 작성해주세요~</span>
-                  <span v-else>로그인한 유저만 글을 쓸 수 있습니다</span>
-                </div>
-                <div class="pull-right">
-                  <router-link :to="{ name: 'Moviereviewswrite', params: { movie_pk:movie.id, username:getusernamei } }" >
-                    <button type="button" class="btn btb-default">글쓰기</button>
-                  </router-link>
-                </div>
-                <div class="clearfix"></div>
-              </div>
-            </div>
+          <div class="col-md-8">
             <!-- 리뷰 목록 -->
-            <div id="project-content" class="project-content mt40" v-for="review in reviews" v-bind:key="review">
+            <div id="project-content" class="project-content mt40">
               <div class="community-card">
                 <div class="community-card-head">
                   <span>
@@ -81,43 +61,44 @@
                   </span>
                   <div class="commu-write">
                     <span class="commu-writer">제목: {{review.title}}</span><br/>
-                    <span class="commu-writedate">작성일: <span class="commu-writedate">작성일: {{review.created_at.substr(0,10)}} / {{review.created_at.substr(11,8)}}</span></span>
+                    <span class="commu-writedate">작성일: {{review.created_at.substr(0,10)}} / {{review.created_at.substr(11,8)}}</span>
                     <br>
                     <span class="commu-rank">평점: {{review.rank}}%</span>
 
                   </div>
                 </div>
-                <div class="community-card-body">
+                <div class="community-card-body-review">
                   <div class="commu-content" v-html="review.content">
                   </div>
                   <div class="gmflrp"></div>
                 </div>
               </div>
-              <div class="more-content mt20">
-                <router-link :to="{ name: 'Moviereviews', params: { movie_pk:movie.id, username:getusernamei, review_pk: review.id} }">더 보기</router-link>
-              </div>
               <div class="community-card-foot mt10">
-                <i class="fas fa-comment"></i>&nbsp;{{review.comments_count}}
+                <i class="fas fa-comment"></i>&nbsp;55
               </div>
             </div>
             <div>
-              <!-- <div class="mt-3">
-                <b-pagination
-                  v-model="currentPage"
-                  :total-rows="pageall.total_pages"
-                  :per-page="1"
-                  first-number
-                  last-number
-                  aria-controls="project-content"
-                ></b-pagination>
-              </div> -->
-              <div class="overflow-auto">
-                <b-pagination-nav :link-gen="linkGen" :number-of-pages="pageall.total_pages" use-router></b-pagination-nav>
-              </div>
+              <router-link :to="{ name: 'Moviereviewsupdate', params: { movie_pk:movie.id } }" >
+                <button>수정하기</button>
+              </router-link>
+              <button @click="deleted()" >삭제하기</button>
+              <router-link :to="{ name: 'Moviedetail', params: { movie_pk:movie.id } }" >
+                <button>리뷰목록</button>
+              </router-link>
             </div>
             <!--  -->
           </div>
-
+          <div class="col-md-4">
+            <div class="writer-info mt40">
+              <div class="writer-card">
+                <div class="hello"></div>
+                <div class="mt10"><img class="user-photo" src="../../assets/user-account.png" >감독</div>
+                <div class="mt10">
+                  <p>소개글 입니다~~~</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -129,26 +110,52 @@ import axios from 'axios'
 import {mapGetters} from 'vuex'
 
 export default {
-  name: 'Moviedetail',
+  name: 'Moviereview',
   data: function () {
     return {
       movie: null,
       username: '',
-      reviews: null,
+      review: null,
       pageall: null,
-      commentlength: null,
     }
   },
   props: {
     movie_pk: {
-      type: String,
+      type: Number,
+    },
+    review_pk: {
+      type: Number,
     }
   },
   methods: {
-      linkGen(pageNum) {
-        return pageNum === 1 ? '?' : `?page_num=${pageNum}`
-      }
+    linkGen(pageNum) {
+      return pageNum === 1 ? '?' : `?page_num=${pageNum}`
     },
+    deleted: function () {
+      let token = localStorage.getItem('jwt')
+      let tokenHeader = {}
+      if (token) {
+        tokenHeader['Authorization'] = `JWT ${token}`
+        this.isLogin = true
+      } else {
+        this.isLogin = false
+      }
+      let url = 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews/' + this.review_pk +'/'
+      axios({
+        method: 'delete',
+        url: url,
+        headers: tokenHeader,
+      })  
+      .then(res => {
+        console.log(res.data.length),
+        this.review = res.data
+        this.$router.push({ name: 'Moviedetail' })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+   },
+  },
   created: function () {
     let token = localStorage.getItem('jwt')
     let tokenHeader = {}
@@ -173,10 +180,7 @@ export default {
       .catch(err => {
         console.log(err)
       })
-    let url = 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews/'
-    if (this.$route.query.page_num) {
-      url += '?page_num=' + this.$route.query.page_num
-    }
+    let url = 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews/' + this.review_pk +'/'
     axios({
       method: 'get',
       url: url,
@@ -184,9 +188,7 @@ export default {
     })
       .then(res => {
         console.log(res.data.length),
-        this.pageall = res.data[res.data.length - 1],
-        res.data.pop(),
-        this.reviews = res.data
+        this.review = res.data
       })
       .catch(err => {
         console.log(err)
@@ -202,10 +204,7 @@ export default {
         } else {
           this.isLogin = false
         }
-      let url = 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews/'
-      if (this.$route.query.page_num) {
-        url += '?page_num=' + this.$route.query.page_num
-      }
+      let url = 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews/' + this.review_pk +'/'
       axios({
         method: 'get',
         url: url,
@@ -213,9 +212,7 @@ export default {
       })
         .then(res => {
           console.log(res.data.length),
-          this.pageall = res.data[res.data.length - 1],
-          res.data.pop(),
-          this.reviews = res.data
+          this.review = res.data
         })
         .catch(err => {
           console.log(err)
@@ -229,8 +226,9 @@ export default {
   },
 }
 </script>
+
 <style scoped>
-.funding-amount {
-  font-family: "Black Han Sans", sans-serif;
+.community-card-body-review {
+    min-height: 30px;
 }
 </style>

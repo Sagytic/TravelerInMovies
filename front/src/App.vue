@@ -1,29 +1,35 @@
 <template>
   <div id="app">
-    <div style="position:sticky; top:0;">
-      <b-navbar toggleable="lg" type="dark" variant="dark">
+    <div>
+      <b-navbar toggleable="lg" type="dark" variant="black" style="padding:0;">
         <b-navbar-nav>
-          <b-nav-item :to="{ name: 'Home' }"><span style="color:pink"> Traveler in Movies </span></b-nav-item>
+          <!-- <span style="color:white"> Traveler in Movies </span> -->
+          <b-nav-item :to="{ name: 'Home' }"><img src="@/assets/TimbyLogoster-removebg.png" alt="" style="width:7.5rem;"></b-nav-item>
         </b-navbar-nav>
           <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto">
-                <b-nav-item-dropdown text="Account" right>
-                  <span v-if="isLogin">
-                    <b-dropdown-item :to="{ name: 'Profile' }">Profile</b-dropdown-item>
-                    <b-dropdown-item @click.native="logout" to="#">Logout</b-dropdown-item>
-                  </span>
-                  <span v-else>
-                    <b-dropdown-item :to="{ name: 'Signup' }">Signup</b-dropdown-item>
-                    <b-dropdown-item :to="{ name: 'Login' }">Login</b-dropdown-item>
-                  </span>
-                </b-nav-item-dropdown>
-                <b-nav-item-dropdown text="Movies" right>
-                  <b-dropdown-item :to="{ name: 'Movielist' }">Movielist</b-dropdown-item>
-                  <b-dropdown-item :to="{ name: 'MovieRecommend' }">Recommend</b-dropdown-item>
-                </b-nav-item-dropdown>
-          </b-navbar-nav>
+          <span v-if="isLogin">
+            <b-navbar-nav class="ml-auto">
+                <b-nav-item :to="{ name: 'Profile' }">Profile</b-nav-item>
+                <b-nav-item @click="logout" to="#">Logout</b-nav-item>
+            </b-navbar-nav>
+          </span>
+          <span v-else>
+            <b-navbar-nav class="ml-auto">
+              <li class="nav-item"><a href="http://localhost:8080/accounts/signup" aria-current="page" class="nav-link router-link-exact-active router-link-active" target="_self">Signup</a></li>
+              <!-- <b-nav-item :to="{ name: 'Signup' }">Signup</b-nav-item> -->
+              <b-nav-item :to="{ name: 'Login' }">Login</b-nav-item>
+            </b-navbar-nav>
+          </span>
+            <b-navbar-nav class="ml-auto">
+              <b-nav-item :to="{ name: 'Movielist' }">Movielist</b-nav-item>
+            </b-navbar-nav>
       <div style="color:white; margin-left:auto; margin-right:20px;">
-        {{username}} 님 반갑습니다~
+        <span v-if="isLogin">
+          {{nickname()}} 님의 선호도를 반영한 추천 목록입니다🥰
+        </span>
+        <span v-else>
+          무작위로 추천된 9개의 영화로 떠나볼까요?🥰
+        </span>
       </div>
       </b-navbar>
     </div>
@@ -34,7 +40,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 export default {
   name: 'App',
   data: function () {
@@ -52,6 +58,29 @@ export default {
       this.$router.push({ name: 'Login' })
       // 로그아웃하며 토큰 삭제
     },
+    ...mapState([
+      'nickname',
+    ]),
+  },
+  created: function () {
+    // 로그인하며 토큰 저장
+    const token = localStorage.getItem('jwt')
+    const currentUser = localStorage.getItem("username")
+
+    if (token) {
+      this.isLogin = true
+      this.username = currentUser
+    }
+  },
+  created: function () {
+    // 로그인하며 토큰 저장
+    const token = localStorage.getItem('jwt')
+    const currentUser = localStorage.getItem("username")
+
+    if (token) {
+      this.isLogin = true
+      this.username = currentUser
+    }
   },
   updated: function () {
     // 로그인하며 토큰 저장
@@ -76,6 +105,24 @@ export default {
 /* 전체 */
 html {
   font-size: 16px;
+  background: #37373d;
+}
+body {
+  background: #37373d;
+}
+.containers {
+  background: #1e1e1e;
+  color:white;
+}
+.container {
+  background: #1e1e1e;
+  color:white;
+}
+section {
+  background: #1e1e1e;
+}
+input {
+  color:black;
 }
 a {
   text-decoration: npne;
@@ -86,6 +133,7 @@ a {
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
   color: #2c3e50;
+  /* background: #1e1e1e; */
 }
 
 #nav {
@@ -102,7 +150,7 @@ a {
 }
 
 section {
-  background:#f6f6f6;
+  background:#37373d;
 }
 /* 로그인&회원가입 */
 
@@ -288,43 +336,11 @@ section {
 
 .listdiv{
 	margin-top:24px;
+  background:#1e1e1e;
 }
 .item-h{
 	margin-top:50px;
 	position:relative;
-}
-
-.item-heart{
-	position:relative;
-	z-index:9;
-	right: -2px;
-	top:25px;
-	width:24px;
-	height:24px;
-}
-.heart-btn{
-	border: 0px;
-  padding: 0px;
-  overflow: hidden;
-  background: transparent;
-  position: relative;
-  z-index: 2;
-  outline: none;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.heart-btn::before{
-	content: "";
-  display: block;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .item-image{
@@ -410,7 +426,6 @@ section {
 
 .item-funddingstat{
 	margin:0px;
-	display:flex;
 	align-items: flex-end;
 	height:35px;
 }
@@ -427,7 +442,7 @@ section {
 	width: 300px;
   height: 145px;
   margin-top: 35px;
-  background: #f6f6f6;
+  background: #37373d;
   padding: 20px;
 }
 .fundding_contents h5{
@@ -465,12 +480,6 @@ section {
   width: 100%;
 }
 
-.item-funddingstat {
-  margin: 0;
-  display: flex;
-  align-items: flex-end;
-  height: 35px;
-}
 .fundding-amount {
   line-height: 27px;
   color: #ff9696;
@@ -484,7 +493,7 @@ section {
   width: 300px;
   height: 145px;
   margin-top: 35px;
-  background: #f6f6f6;
+  background: #37373d;
   padding: 20px;
 }
 .fundding_contents h5 {
@@ -532,7 +541,7 @@ section {
   width: 100%;
 }
 .fundding-info {
-  padding: 0 15px 30px 45px;
+  padding: 0 15px 30px 30px;
 }
 
 .fundding-stat {
@@ -582,7 +591,8 @@ section {
 }
 
 .content-section {
-  background: #f6f6f6;
+  height:100%;
+  background: #37373d;
 }
 
 .project-content,
@@ -836,7 +846,7 @@ section {
 }
 
 .postNum_b {
-  background: #f6f6f6;
+  background: #37373d;
   color: #969696;
   padding: 10px;
   border: none;
@@ -1164,4 +1174,8 @@ width:100%;
 	margin-left:42%;
 }
 
+a {
+  text-decoration: none;
+  color: white;
+}
 </style>

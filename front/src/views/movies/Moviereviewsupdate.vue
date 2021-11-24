@@ -1,5 +1,9 @@
 <template>
   <div>
+    <section>
+			<button type="button" name="button" class="ac-sub-go-top"><i class="fas fa-arrow-up"></i></button>
+			<div class="clearboth"></div>
+		</section>
 		<section>
 			<div class="project-bar">
 			</div>
@@ -9,32 +13,15 @@
         <div class="row">
           <div class="col-md-8">
             <div class="project-content mt40">
-							<div class="PostEditTitle">게시글 작성하기</div>
+							<div class="PostEditTitle">게시글 수정하기</div>
               <form action="" id="review-form">
-                <div class="review-write-title" style="height:100px;">
-                  <div style="width:30%; float:left;">
-                  <input type="text" v-model="review.title" />
-                  </div>
-                  <div style="width:70%; float:left;">
-                  <div class="PostEditRate">평점</div>
-                    <div class="RateVal">{{sliderValue}}</div>
-                    <circle-slider
-                      v-model="sliderValue"
-                      :side="100"
-                      :min="0"
-                      :max="100"
-                      :step-size="1"
-                      :circle-width-rel="40"
-                      :progress-width-rel="20"
-                      :knob-radius="10"
-                    class="circle"></circle-slider>
-                  </div>
-                </div>
+                <input type="text" v-model="review.title" />
+                <input type="number" v-model="review.rank" min="0" max="100"/>
                 <editor ref="toastuiEditor" :initialEditType="'wysiwyg'" />
               </form>
 							<div class="PostEditLast">
 								<div class="pull-right">
-									<a class="register-btn" @click="createAction">등록 <i class="fas fa-check"></i></a>
+									<a class="register-btn" @click="updateAction">등록 <i class="fas fa-check"></i></a>
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -58,17 +45,13 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import axios from 'axios'
 import 'codemirror/lib/codemirror.css'; 
 import '@toast-ui/editor/dist/toastui-editor.css'; 
 import { Editor } from '@toast-ui/vue-editor';
-import VueCircleSlider from 'vue-circle-slider'
-
-Vue.use(VueCircleSlider)
 
 export default {
-  name: 'Moviedetail',
+  name: 'Reviewupdate',
   components: { 
     Editor, 
   },
@@ -77,32 +60,31 @@ export default {
       movie: null,
       tokenHeader: null,
       review: {
+        id: '',
         title: '',
         content: '',
         movie_id: null,
-      },
-      sliderValue: '',
+      }
     }
   },
   methods: {
-    createAction() {
-      this.review.movie_id = this.movie.id
-      this.review.rank = this.sliderValue
+    updateAction() {
+      this.review.id = this.id
       var content = this.$refs.toastuiEditor.invoke("getHTML");
       this.review.content = content
       // content를 저장하는 액션 처리
-      // console.log(JSON.stringify(this.review))
+      console.log(JSON.stringify(this.review))
       axios({
         // axios는 JSON.stringify를 자체적으로 해준다. 즉 data로 
         // 넘기는 값은 JSON.stringify를 해줄 필요가 없다.
-        method: 'post',
-        url: 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews/',
+        method: 'put',
+        url: `http://127.0.0.1:8000/movies/${this.movie_pk}/reviews/${this.review_pk}/`,
         headers: this.tokenHeader,
         data: this.review
       })
         .then(res => {
           console.log(res)
-          this.$router.push({ name: 'Moviedetail' })
+          this.$router.push({ name: 'Moviereviews' })
         })
         .catch(err => {
           // 에러출력
@@ -112,6 +94,9 @@ export default {
   },
   props: {
     movie_pk: {
+      type: String,
+    },
+    review_pk: {
       type: String,
     }
   },
@@ -128,13 +113,15 @@ export default {
     }
     axios({
       method: 'get',
-      url: 'http://127.0.0.1:8000/movies/' + this.movie_pk,
+      url: `http://127.0.0.1:8000/movies/${this.movie_pk}/reviews/${this.review_pk}/`,
       headers: this.tokenHeader,
     })
       .then(res => {
         console.log(res.data)
-        this.movie = res.data
+        this.review = res.data
+        this.id = this.review.id
         this.username = currentUser
+        this.$refs.toastuiEditor.invoke("setHTML", this.review.content);
       })
       .catch(err => {
         console.log(err)

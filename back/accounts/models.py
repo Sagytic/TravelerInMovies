@@ -25,3 +25,6 @@ class User(AbstractUser):
 
     # 팔로워 팔로우 N:M 관계
     # followers = models.ManyToManyField('self', symmetrical=False, related_name='followings')
+
+    # preference
+    user_preference = models.TextField(max_length=100)
