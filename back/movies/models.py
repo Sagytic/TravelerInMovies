@@ -29,6 +29,13 @@ class Movie(models.Model):
     actor1_name = models.CharField(max_length=100)
     actor2_path = models.CharField(max_length=500)
     actor2_name = models.CharField(max_length=100)
+    actor3_path = models.CharField(max_length=500)
+    actor3_name = models.CharField(max_length=100)
+    actor4_path = models.CharField(max_length=500)
+    actor4_name = models.CharField(max_length=100)        
+    actor5_path = models.CharField(max_length=500)
+    actor5_name = models.CharField(max_length=100)
+    backdrop_path = models.CharField(max_length=500)
 
     def __str__(self):
         return self.title
@@ -82,6 +89,8 @@ class VoteRate(models.Model):
     rate = models.FloatField()
 
 
-
+class Preference(models.Model):
+    matching = models.TextField(max_length=100)
+    similar = models.IntegerField()
 
 

@@ -1,5 +1,6 @@
 <template>
-  <div id='home'>
+  <div id='Recommended'>
+    <h1>이건 레코멘디드</h1>
     <!-- bg you/tube 영상이 클릭되지 않게 투명 벽 생성 -->
     <div id='wall' style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0;"></div>
 
@@ -143,7 +144,7 @@ import axios from 'axios'
 import _ from 'lodash'
 
 export default {
-  name: 'home',
+  name: 'Recommended',
   data: function () {
     return {
       videoUrl: null,
@@ -155,7 +156,6 @@ export default {
       genres: [],
       directors: [],
       reviews: [],
-      username: null,
     }
   },
   components: {
@@ -171,20 +171,6 @@ export default {
         .then(res => {
           this.movies = _.sampleSize(res.data, 9) 
           console.log(this.movies)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    getRecommend: function () {
-      axios({
-        method: 'get',
-        url: `http://127.0.0.1:8000/movies/recommend/${this.username}`,
-      })
-        .then(res => {
-          this.movies = res.data
-          console.log(this.movies)
-          console.log('로그인유저추천')
         })
         .catch(err => {
           console.log(err)
@@ -232,6 +218,8 @@ export default {
       const target = this.movies[n].country_name
       this.videoUrl = countryUrl[target] + this.autoPlay + this.hideBar
     },
+    logout: function () {
+    },
     showCard: function (i) {
       this.card_clicked = !this.card_clicked
       this.cardIdx = i
@@ -247,14 +235,8 @@ export default {
   },
   created: function () {
     this.videoUrl = 'https://www.youtube.com/embed/vGY5sLdyajk?start=264' + this.autoPlay + this.hideBar +'&loop=1&playlist=vGY5sLdyajk'
-    const token = localStorage.getItem('jwt')
-    this.username = localStorage.getItem("username")
-    if (token) {
-      this.getRecommend()
-    } else {
-      this.getMovies()
-    }
-    
+    if (this)
+    this.getMovies()
   },
   updated: function () {
     this.getGenres()

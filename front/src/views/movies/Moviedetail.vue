@@ -182,7 +182,7 @@ export default {
       .catch(err => {
         console.log(err)
       })
-    let url = 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews'
+    let url = 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews/'
     if (this.$route.query.page_num) {
       url += '?page_num=' + this.$route.query.page_num
     }
@@ -211,7 +211,7 @@ export default {
         } else {
           this.isLogin = false
         }
-      let url = 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews'
+      let url = 'http://127.0.0.1:8000/movies/' + this.movie_pk + '/reviews/'
       if (this.$route.query.page_num) {
         url += '?page_num=' + this.$route.query.page_num
       }
