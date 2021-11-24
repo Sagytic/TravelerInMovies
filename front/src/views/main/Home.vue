@@ -129,7 +129,10 @@ export default {
         url: 'http://127.0.0.1:8000/movies/',
       })
         .then(res => {
-          this.movies = _.sampleSize(res.data, 9) 
+          console.log(res.data)
+          let movies = res.data
+          movies.pop()
+          this.movies = _.sampleSize(movies, 9) 
           console.log(this.movies)
         })
         .catch(err => {

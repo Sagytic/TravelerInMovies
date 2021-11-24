@@ -2,75 +2,8 @@
     <section>
 			<div class="container">
 				<div class="categorydiv">
-					<div>
-						<a href="">
-							<span class="category-part">
-								<span class="category-1"></span>
-								<span>전체보기</span>
-							</span>
-						</a>
-						<a href="">
-							<span class="category-part">
-								<span class="category-1"></span>
-								<span>액션</span>
-							</span>
-						</a>
-						<a href="">
-							<span class="category-part">
-								<span class="category-1"></span>
-								<span>판타지</span>
-							</span>
-						</a>
-						<a href="">
-							<span class="category-part">
-								<span class="category-1"></span>
-								<span>애니메이션</span>
-							</span>
-						</a>
-						<a href="">
-							<span class="category-part">
-								<span class="category-1"></span>
-								<span>드라마</span>
-							</span>
-						</a>
-						<a href="">
-							<span class="category-part">
-								<span class="category-1"></span>
-								<span>공포</span>
-							</span>
-						</a>
-						<a href="project-release.html">
-							<span class="category-part">
-								<span class="category-1"></span>
-								<span>코미디</span>
-							</span>
-						</a>
-            <a href="">
-							<span class="category-part">
-								<span class="category-1"></span>
-								<span>지역별</span>
-							</span>
-						</a>
-					</div>
 				</div>
-				<div class="listifodiv">
-					<div class="pull-left">
-						<p class="procount"><span>{{movies.length}}</span>개의 영화가 있습니다.</p>
-					</div>
-					<div class="pull-right">
-						<div class="dropdown">
-							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-								평점순
-							</button>
-							<ul class="dropdown-menu" role="menu"
-								aria-labelledby="dropdownMenu1">
-								<li role="presentation"><a role="menuitem" tabindex="-1" href="#">평점순</a></li>
-								<li role="presentation"><a role="menuitem" tabindex="-1" href="#">개봉일순</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="clearfix"></div>
-				</div>
+        <!--  -->
 				<div class="listdiv">
 					<div class="row" >
 						<table class="col-md-4 project-item" 
@@ -81,9 +14,6 @@
             :current-page="currentPage">
 							<div class="item-h">
 								<div class="project-card">
-									<div class="item-heart pointer">
-										<button type="button" class="heart-btn"></button>
-									</div>
                   <router-link :to="{ name: 'Moviedetail', params: { movie_pk:movie.id } }" >
 									<div class="item-image">
 										<a href="#">
@@ -98,42 +28,117 @@
 								</div>
 							</div>
 						</table>
-              <!-- <b-pagination
-                v-model="currentPage"
-                :total-rows="rows"
-                :per-page="perPage"
-                aria-controls="my-table"
-              ></b-pagination> -->
-
-              <p class="mt-3">Current Page: {{ currentPage }}</p>
+              <div class="overflow-auto">
+                <b-pagination-nav :link-gen="linkGen" :number-of-pages="pageall.total_pages" align="center" use-router></b-pagination-nav>
+              </div>
 					</div><!-- row end -->
 				</div>
 			</div>
+        <div class="remote-box">
+          <div class="remote-box-top">퀵 메뉴</div>
+          <div class="remote-box-body">
+            <div title="Collapsible card" class="remote-box-sort">
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"
+                >
+                  정렬
+                </button>
+                <ul class="dropdown-menu" role="menu"
+                  aria-labelledby="dropdownMenu1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" @click="getMovies()">번호순</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" @click="getRate()">평점순</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" @click="getPopular()">인기순</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="remote-box-all">
+              <p class="procount">총 영화 <span>{{pageall.total_count}}</span></p>
+            </div>
+            <div class="overflow-auto remote-box-page">
+              <b-pagination-nav :link-gen="linkGen" :number-of-pages="pageall.total_pages" limit='3' hide-ellipsis='true' hide-goto-end-buttons='true' align="fill" size="sm" use-router></b-pagination-nav>
+            </div>
+          </div>
+        </div>
+        <!--  -->
 		</section>
 </template>
 
 
 
 <script>
+import Vue from 'vue'
 import axios from 'axios'
+import Scrollspy from 'vue2-scrollspy'
+
+Vue.use(Scrollspy)
 
 export default {
   name: 'Movielist',
   data: function () {
     return {
       movies: null,
-      perPage:9,
-      currentPage:1,
+      pageall: null,
+      sort: null,
     }
   },
   methods: {
+    linkGen(pageNum) {
+      return pageNum === 1 ? '?' : `?page_num=${pageNum}`
+    },
     getMovies: function () {
+      let url = 'http://127.0.0.1:8000/movies/no/'
+      if (this.$route.query.page_num) {
+        url += '?page_num=' + this.$route.query.page_num
+      }
       axios({
         method: 'get',
-        url: 'http://127.0.0.1:8000/movies/',
+        url: url,
       })
         .then(res => {
           console.log(res.data)
+          this.pageall = res.data[res.data.length - 1],
+          this.sort = 'all'
+          res.data.pop(),
+          this.movies = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getRate: function () {
+      let url = 'http://127.0.0.1:8000/movies/rate/'
+      if (this.$route.query.page_num) {
+        url += '?page_num=' + this.$route.query.page_num
+      }
+      axios({
+        method: 'get',
+        url: url,
+      })
+        .then(res => {
+          console.log(res.data)
+          this.pageall = res.data[res.data.length - 1],
+          this.sort = 'rate'
+          res.data.pop(),
+          this.movies = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getPopular: function () {
+      let url = 'http://127.0.0.1:8000/movies/popular/'
+      if (this.$route.query.page_num) {
+        url += '?page_num=' + this.$route.query.page_num
+      }
+      axios({
+        method: 'get',
+        url: url,
+      })
+        .then(res => {
+          console.log(res.data)
+          this.pageall = res.data[res.data.length - 1],
+          this.sort = 'popular'
+          res.data.pop(),
           this.movies = res.data
         })
         .catch(err => {
@@ -142,7 +147,36 @@ export default {
     },
 
   },
-
+  watch: {
+    $route() {
+      let url = null
+      if (this.sort === 'all') {
+        url = 'http://127.0.0.1:8000/movies/no/'
+      } else if (this.sort === 'rate') {
+        url = 'http://127.0.0.1:8000/movies/rate/'
+      } else if (this.sort === 'popular') {
+        url = 'http://127.0.0.1:8000/movies/popular/'
+      }
+      console.log(this.sort)
+      console.log(url)
+      if (this.$route.query.page_num) {
+        url += '?page_num=' + this.$route.query.page_num
+      }
+      axios({
+        method: 'get',
+        url: url,
+      })
+        .then(res => {
+          console.log(res.data)
+          this.pageall = res.data[res.data.length - 1],
+          res.data.pop(),
+          this.movies = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  },
   created: function () {
     this.getMovies()
   },
@@ -156,6 +190,49 @@ export default {
 </script>
 
 <style scoped="scoped">
+
+.remote-box {
+  position:fixed; 
+  width:165px; 
+  height:400px; 
+  border-radius: 5px;
+  border:10px solid #dbdbdb;
+  background: white;
+  z-index:100;
+  right:7%;
+  top:135px;
+}
+
+.remote-box-top {
+  width:100%;
+  background: #474747;
+  text-align: center;
+  color: white;
+}
+
+.remote-box-all {
+  width:100%;
+  text-align: center;
+  padding:5px;
+}
+
+.remote-box-sort {
+  width:100%;
+}
+
+.dropdown-toggle {
+  width:100%;
+  background:#dbdbdb;
+}
+
+.remote-box-page {
+  left:10;
+}
+
+/* .container {
+  border:1px solid black;
+} */
+
 .user-photo{
 	width:38px;
 	height:38px;
@@ -263,45 +340,14 @@ export default {
 	position:relative;
 }
 
-.item-heart{
-	position:relative;
-	z-index:9;
-	right: -2px;
-	top:25px;
-	width:24px;
-	height:24px;
-}
-.heart-btn{
-	border: 0px;
-  padding: 0px;
-  overflow: hidden;
-  background: transparent;
-  position: relative;
-  z-index: 2;
-  outline: none;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.heart-btn::before{
-	content: "";
-  display: block;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .item-image{
 	border-radius:4px;
+  margin:auto;
 	position:relative;
 	overflow:hidden;
 	width: 250px;
   height: 380px;
+  border:1px solid white;
 }
 .item-image a img:hover{
 	transform: scale(1.2);
@@ -365,14 +411,13 @@ export default {
 
 .item-funddingstat{
 	margin:0px;
-	display:flex;
-	align-items: flex-end;
 	height:35px;
 }
 .fundding-amount{
+  margin-left:20%;
 	line-height:27px;
 	color:#ff9696;
-	font-size:30px;
+	font-size:20px;
 	font-weight:700;
 	margin-top:18px;
 	letter-spacing:2px;
@@ -436,17 +481,7 @@ export default {
 
 .item-funddingstat {
   margin: 0;
-  display: flex;
-  align-items: flex-end;
   height: 35px;
-}
-.fundding-amount {
-  line-height: 27px;
-  color: #ff9696;
-  font-size: 30px;
-  font-weight: 700;
-  margin-top: 18px;
-  letter-spacing: 2px;
 }
 
 .fundding_contents {
@@ -849,6 +884,6 @@ export default {
   margin-left: 100px;
 }
 .item-image a img{
-width:100%;
+  width:100%;
 }
 </style>

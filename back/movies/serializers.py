@@ -9,20 +9,20 @@ class CommentSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)
     class Meta:
         model = Comment
-        fields = ('id', 'user', 'review', 'content', 'created_at', 'updated_at',)
-        read_only_fields = ('review',)
+        fields = ('id', 'user_id', 'review_id', 'content', 'created_at', 'updated_at', 'user',)
+        read_only_fields = ('review_id',)
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, read_only=True)
-    comments_count = serializers.IntegerField(source='comments.count', read_only=True)
+    comments = CommentSerializer(source='comment_set', many=True, read_only=True)
+    comments_count = serializers.IntegerField(source='comment_set.count', read_only=True)
     user = UserProfileSerializer(read_only=True)
     class Meta:
         model = Review
         fields = ('id', 'user_id', 'movie_id', 'title', 
         'rank', 'content', 'created_at', 'updated_at'
         , 'comments', 'comments_count', 'user')
-        read_only_fields = ('movie', 'user')
+        read_only_fields = ('movie_id', 'user')
 
 
 # 영화 리스트 Read용

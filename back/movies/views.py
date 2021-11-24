@@ -26,9 +26,50 @@ User = get_user_model()
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def movie_list(request):
-    movies = Movie.objects.all()
+    movies = Movie.objects.all().order_by('?')
+    paginator = Paginator(movies, 9)
+    page_number = request.GET.get('page_num')
+    movies = paginator.get_page(page_number)
     serializer = MovieListSerializer(movies, many=True)
-    return Response(serializer.data)
+    data = serializer.data
+    data.append({'total_pages': paginator.num_pages})
+    return Response(data)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def movie_list_no(request):
+    movies = Movie.objects.all().order_by('country_name')
+    paginator = Paginator(movies, 9)
+    page_number = request.GET.get('page_num')
+    movies = paginator.get_page(page_number)
+    serializer = MovieListSerializer(movies, many=True)
+    data = serializer.data
+    data.append({'total_pages': paginator.num_pages, 'total_count': paginator.count,})
+    return Response(data)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def movie_list_rate(request):
+    movies = Movie.objects.all().order_by('-vote_avg')
+    paginator = Paginator(movies, 9)
+    page_number = request.GET.get('page_num')
+    movies = paginator.get_page(page_number)
+    serializer = MovieListSerializer(movies, many=True)
+    data = serializer.data
+    data.append({'total_pages': paginator.num_pages, 'total_count': paginator.count,})
+    return Response(data)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def movie_list_popular(request):
+    movies = Movie.objects.all().order_by('-popularity')
+    paginator = Paginator(movies, 9)
+    page_number = request.GET.get('page_num')
+    movies = paginator.get_page(page_number)
+    serializer = MovieListSerializer(movies, many=True)
+    data = serializer.data
+    data.append({'total_pages': paginator.num_pages, 'total_count': paginator.count,})
+    return Response(data)
 
 '''
 단일 영화 조회
@@ -72,7 +113,7 @@ def review_list(request, movie_pk):
 '''
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([AllowAny])
-def review_detail(request, review_pk):
+def review_detail(request, movie_pk, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
 
     # 단일 리뷰 조회
@@ -82,7 +123,7 @@ def review_detail(request, review_pk):
 
     # 현재 유저와 리뷰를 쓴 유저가 같은 경우만 수정 및 삭제
     elif request.user == review.user:
-        # 리뷰 수정
+    # 리뷰 수정
         if request.method == 'PUT':
             serializer = ReviewSerializer(review, data=request.data)
             if serializer.is_valid(raise_exception=True):
@@ -106,17 +147,23 @@ def review_detail(request, review_pk):
 @permission_classes([AllowAny])
 def comment_list(request, review_pk):
     # 현재 리뷰 가져오기
-    review = get_object_or_404(Review, pk=review_pk)
-    
+    review = get_object_or_404(Review, id=review_pk)
+    # print(review.id)
+    # print(request.user)
+    # user = get_object_or_404(User, id=1)
     # 해당 리뷰의 댓글 조회
+    print('aaa')
+    print(request.user)
     if request.method == 'GET':
-        comments = Comment.objects.filter(review__pk=review_pk).order_by('-pk')
+        comments = Comment.objects.filter(review_id=review_pk).order_by('-pk')
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
     
     # 해당 리뷰의 댓글 작성
     elif request.method == 'POST':
         serializer = CommentSerializer(data=request.data)
+        # print(serializer)
+        # print(request.user)
         if serializer.is_valid(raise_exception=True):
             # Vue에서 axios 요청할 때 URI에 movie의 id값을 넣어서 요청해야 함
             serializer.save(user=request.user, review=review)
@@ -128,7 +175,9 @@ def comment_list(request, review_pk):
 @api_view(['PUT', 'DELETE'])
 @permission_classes([AllowAny])
 def comment_detail(request, comment_pk):
-    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment = get_object_or_404(Comment, id=comment_pk)
+    print(comment.user)
+    print(request.user)
 
     # 현재 유저와 댓글 작성자가 같을 때 수정 및 삭제 가능
     if request.user == comment.user:

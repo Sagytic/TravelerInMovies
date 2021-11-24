@@ -66,6 +66,7 @@ class Review(models.Model):
         return self.title
 
 class Comment(models.Model):
+    # foreignKey로 넘겨줄 때 부모 클래스에 _set 으로 해당 값을 넘겨준다 review_set 이런 식으로 Review 클래스에 값이 추가된다.
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)    
     content = models.TextField()

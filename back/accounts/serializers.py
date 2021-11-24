@@ -19,7 +19,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id','nickname', 'profile_image', 'background_image', 'rank_point')
+        fields = ('id', 'username', 'nickname', 'profile_image', 'background_image', 'rank_point')
 
 
 class UserReviewSerializer(serializers.ModelSerializer):

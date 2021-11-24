@@ -1,28 +1,28 @@
 <template>
   <div id="app">
-    <div style="position:sticky; top:0;">
+    <div>
       <b-navbar toggleable="lg" type="dark" variant="dark">
         <b-navbar-nav>
           <b-nav-item :to="{ name: 'Home' }"><span style="color:pink"> Traveler in Movies </span></b-nav-item>
         </b-navbar-nav>
           <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto">
-                <b-nav-item-dropdown text="Account" right>
-                  <span v-if="isLogin">
-                    <b-dropdown-item :to="{ name: 'Profile' }">Profile</b-dropdown-item>
-                    <b-dropdown-item @click.native="logout" to="#">Logout</b-dropdown-item>
-                  </span>
-                  <span v-else>
-                    <b-dropdown-item :to="{ name: 'Signup' }">Signup</b-dropdown-item>
-                    <b-dropdown-item :to="{ name: 'Login' }">Login</b-dropdown-item>
-                  </span>
-                </b-nav-item-dropdown>
-                <b-nav-item-dropdown text="Movies" right>
-                  <b-dropdown-item :to="{ name: 'Movielist' }">Movielist</b-dropdown-item>
-                  <b-dropdown-item :to="{ name: 'MovieRecommend' }">Recommend</b-dropdown-item>
-                </b-nav-item-dropdown>
-          </b-navbar-nav>
-      <div style="color:white; margin-left:auto; margin-right:20px;">
+          <span v-if="isLogin">
+            <b-navbar-nav class="ml-auto">
+                <b-nav-item :to="{ name: 'Profile' }">Profile</b-nav-item>
+                <b-nav-item @click="logout" to="#">Logout</b-nav-item>
+            </b-navbar-nav>
+          </span>
+          <span v-else>
+            <b-navbar-nav class="ml-auto">
+              <li class="nav-item"><a href="http://localhost:8080/accounts/signup" aria-current="page" class="nav-link router-link-exact-active router-link-active" target="_self">Signup</a></li>
+              <!-- <b-nav-item :to="{ name: 'Signup' }">Signup</b-nav-item> -->
+              <b-nav-item :to="{ name: 'Login' }">Login</b-nav-item>
+            </b-navbar-nav>
+          </span>
+            <b-navbar-nav class="ml-auto">
+              <b-nav-item :to="{ name: 'Movielist' }">Movielist</b-nav-item>
+            </b-navbar-nav>
+      <div v-if="isLogin" style="color:white; margin-left:auto; margin-right:20px;">
         {{username}} 님 반갑습니다~
       </div>
       </b-navbar>
@@ -53,6 +53,16 @@ export default {
       // 로그아웃하며 토큰 삭제
     },
   },
+  created: function () {
+    // 로그인하며 토큰 저장
+    const token = localStorage.getItem('jwt')
+    const currentUser = localStorage.getItem("username")
+
+    if (token) {
+      this.isLogin = true
+      this.username = currentUser
+    }
+  },
   updated: function () {
     // 로그인하며 토큰 저장
     const token = localStorage.getItem('jwt')
@@ -76,6 +86,24 @@ export default {
 /* 전체 */
 html {
   font-size: 16px;
+  background: #37373d;
+}
+body {
+  background: #37373d;
+}
+.containers {
+  background: #1e1e1e;
+  color:white;
+}
+.container {
+  background: #1e1e1e;
+  color:white;
+}
+section {
+  background: #1e1e1e;
+}
+input {
+  color:black;
 }
 a {
   text-decoration: npne;
@@ -86,6 +114,7 @@ a {
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
   color: #2c3e50;
+  /* background: #1e1e1e; */
 }
 
 #nav {
@@ -102,7 +131,7 @@ a {
 }
 
 section {
-  background:#f6f6f6;
+  background:#37373d;
 }
 /* 로그인&회원가입 */
 
@@ -288,43 +317,11 @@ section {
 
 .listdiv{
 	margin-top:24px;
+  background:#1e1e1e;
 }
 .item-h{
 	margin-top:50px;
 	position:relative;
-}
-
-.item-heart{
-	position:relative;
-	z-index:9;
-	right: -2px;
-	top:25px;
-	width:24px;
-	height:24px;
-}
-.heart-btn{
-	border: 0px;
-  padding: 0px;
-  overflow: hidden;
-  background: transparent;
-  position: relative;
-  z-index: 2;
-  outline: none;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.heart-btn::before{
-	content: "";
-  display: block;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .item-image{
@@ -410,7 +407,6 @@ section {
 
 .item-funddingstat{
 	margin:0px;
-	display:flex;
 	align-items: flex-end;
 	height:35px;
 }
@@ -427,7 +423,7 @@ section {
 	width: 300px;
   height: 145px;
   margin-top: 35px;
-  background: #f6f6f6;
+  background: #37373d;
   padding: 20px;
 }
 .fundding_contents h5{
@@ -465,12 +461,6 @@ section {
   width: 100%;
 }
 
-.item-funddingstat {
-  margin: 0;
-  display: flex;
-  align-items: flex-end;
-  height: 35px;
-}
 .fundding-amount {
   line-height: 27px;
   color: #ff9696;
@@ -484,7 +474,7 @@ section {
   width: 300px;
   height: 145px;
   margin-top: 35px;
-  background: #f6f6f6;
+  background: #37373d;
   padding: 20px;
 }
 .fundding_contents h5 {
@@ -532,7 +522,7 @@ section {
   width: 100%;
 }
 .fundding-info {
-  padding: 0 15px 30px 45px;
+  padding: 0 15px 30px 30px;
 }
 
 .fundding-stat {
@@ -582,7 +572,8 @@ section {
 }
 
 .content-section {
-  background: #f6f6f6;
+  height:100%;
+  background: #37373d;
 }
 
 .project-content,
@@ -836,7 +827,7 @@ section {
 }
 
 .postNum_b {
-  background: #f6f6f6;
+  background: #37373d;
   color: #969696;
   padding: 10px;
   border: none;
@@ -881,287 +872,6 @@ section {
 }
 .item-image a img{
 width:100%;
-}
-
-/* 프로필 */
-
-.container2 {
-	position:relative;
-	width:1080px;
-	height:1200px;
-	padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-	padding-top:15px;
-}
-.absoluteid1 {
-	position:absolute;
-	margin-left:230px;
-	margin-top:3px;
-	width: 205px;
-  height: 113px;
-	border:1px solid #dbdbdb;
-	background:white;
-	border-radius:5px;
-	display:none;
-	z-index:100;
-}
-.absoluteid1-1 {
-	width:100%;
-	height:56px;
-	padding: 17px 35px 10px 15px;	
-	border-bottom:1px solid #dbdbdb;
-}
-.absoluteid1-2 {
-	width:100%;
-	height:56px;
-	padding: 17px 35px 10px 15px;
-}
-.absoluteid1-1:hover {
-	border-radius:5px;	
-	color:#3aa3e3;
-	background:#edf6fc;
-	transition: 0.1s linear !important;
-    -webkit-transition: 0.1s linear !important;
-}
-.absoluteid1-2:hover {
-
-	height:55px;
-	color:#3aa3e3;
-	background:#edf6fc;
-	transition: 0.1s linear !important;
-    -webkit-transition: 0.1s linear !important;
-}
-/************************왼쪽 메뉴바 ********************************/
-
-.container2-1 {
-	float:left;
-	width:257px;
-	height:690px;
-	margin-right:15px;
-}
-.container2-1-1 {
-	width:100%;
-	height:295px;
-	border:1px solid #dbdbdb;
-	margin-bottom:15px;
-	background:white;
-	border-radius:5px;
-}
-.container2-1-1-1 {
-	width:100%;
-	height:86px;
-	border-bottom:1px solid #dbdbdb;
-}
-.container2-1-1-2 {
-	width:100%;
-	height:208px;
-	border-bottom:1px solid #dbdbdb;
-}
-.container2-1-1-3 {
-	width:100%;
-	height:152px;
-}
-.container2-1_box0 {
-	width:100%;
-	height:86px;
-	padding: 10px 35px 10px 15px;
-}
-.container2-1_box0_img {
-	float:left;
-	width:38px;
-	height:38px;
-	margin-right:25px;
-	padding: 10px;
-}
-.container2-1_box1 {
-	width:100%;
-	height:56px;
-	padding: 20px 35px 10px 15px;
-}
-.container2-1_box2 {
-	width:100%;
-	height:30px;
-	padding: 10px 15px;
-	font-size:12px;
-	color:#ff9696;
-}
-.container2-1_box2 img {
-	margin-bottom: 2px;
-	margin-left:3px;
-	width:40px;
-	height:20px;
-}
-.container2-1_box_id {
-	margin-top:3px;
-}
-.container2-1-2 {
-	width:100%;
-	height:170px;
-	border:1px solid #dbdbdb;
-	background:white;
-	border-radius:3px;
-}
-.container2-1_box0:hover {
-	height:85px;
-	color:#3aa3e3;
-	background:#edf6fc;
-	transition: 0.1s linear !important;
-    -webkit-transition: 0.1s linear !important;
-}
-.container2-1_box1:hover {
-	color:#3aa3e3;
-	background:#edf6fc;
-	transition: 0.1s linear !important;
-    -webkit-transition: 0.1s linear !important;
-}
-
-/********************* 오른쪽 메인 컨텐츠 ***************************/
-
-.container2-2 {
-	float:left;
-	width:772px;
-	border:1px solid #dbdbdb;
-	background:white;
-	border-radius:3px;
-}
-.container2-2-1 {
-	width:100%;
-	height:66px;
-	border-bottom:1px solid #dbdbdb;
-}
-.container2-2-1-1 {
-	float:left;
-	padding-top:12px;
-	margin-left:20px;
-}
-.container2-2-1-2 {
-	float:right;
-	margin:15px;
-	margin-right:40px;
-}
-
-.container2-2-2 {
-	width:100%;
-	height:234px;
-	border-bottom:1px solid #dbdbdb;
-	padding:20px;
-}
-.container2-2-2-1 {
-	float:left;
-	margin-top:30px;
-	margin-right:20px;
-}
-.container2-2-2-1 img{
-	width:130px;
-	height:130px;
-	border:1px solid #dbdbdb;		
-	border-radius:100px;
-}
-.container2-2-2-2 {
-	margin-top:20px;
-	margin-bottom:5px;
-}
-.container2-2-2-2 a {
-	color:#337ab7;
-}
-.container2-2-2-2 a:hover {
-	color:#00437c;
-	text-decoration: underline; 
-}
-.container2-2-2-3 {
-	margin-bottom:10px;
-}
-/************************ 프로필 추가변경 *****************************/
-
-.container2-2-2 {
-	width:100%;
-	height:749px;
-	padding:0px;
-	border:0px;
-	font-size:13px;
-} 
-.container2-2-2-1 {
-	float:left;
-	width:100%;
-	height:150px;
-	border-bottom:1px solid #dbdbdb;
-	margin:0px;
-	padding:20px;
-}
-
-.container2-2-2-1-p {
-	float:left;
-	width:100%;
-	height:200px;
-	border-bottom:1px solid #dbdbdb;
-	margin:0px;
-	padding:20px;
-}
-.container2-2-2-1 div:first-child {
-	margin-bottom: 10px;
-	font-size:17px;	
-}
-
-.container2-2-2-1 input {
-	width:90%;
-	height:40px;
-	border:1px solid #ff9696;
-	border-radius: 5px;
-	margin-bottom: 10px;
-}
-.container2-2-2-1 button {
-	width:50px;
-	height:33px;
-	background: #ff9696;
-	color:white;
-	border:0px;
-	border-radius: 5px;
-}
-.container2-2-2-2 {
-	float:left;
-	width:100%;
-	height:350px;
-	border-bottom:1px solid #dbdbdb;
-	margin:0px;
-	padding:20px;
-}
-.container2-2-2-2 div:first-child {
-	margin-bottom: 10px;
-	font-size:17px;
-}
-.container2-2-2-2 button {
-	width:50px;
-	height:33px;
-	background: #ff9696;
-	color:white;
-	border:0px;
-	border-radius: 5px;
-}
-.icon1-2 {
-	width:100%;
-	height:83%;
-	background-color: #f3f3f3;
-
-}
-.icon1-2 img {
-	width:100px;
-	height:100px;
-	margin-left:42%;
-	margin-top:40px;
-	background:gray;
-	border-radius: 100px;
-	border:0px;	
-}
-.icon1-2 input {
-	margin-top:20px;
-	margin-left:38%;
-}
-.icon1-2 button {
-	width:100px;
-	margin-top:20px;
-	margin-left:42%;
 }
 
 </style>

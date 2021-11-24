@@ -11,7 +11,7 @@ movie_data = {
     '브라질': ['hulk','jungle cruise', 'The Mission', 'Mechanic: Resurrection', 'Out of the Shadows', 'The Lost City of Z', 'Rio', 'Rio 2', 'Woman on Top', 'The Rundown', 'Bacurau'],
     '콜롬비아': ['Proof Of Life', 'Lord Of War', 'Romancing the Stone', 'Colombiana', 'Miami Vice', 'Mr. & Mrs. Smith', 'El abrazo de la serpiente', 'American Made', '트리플 엑스', 'Triple Frontier'],
     '멕시코': ['No Country for Old Men','Life of Pi', 'Fast & Furious', 'Sicario', 'Once Upon a Time in Mexico', 'Kill Bill: Volume 1', 'From Dusk Till Dawn', 'Godzilla: King of the Monsters', 'The Perfect Game', 'Coco'],
-    '라스베이거스': ['Now You See Me', 'The Hangover', 'Step Up All In', 'The Big Short', 'Godzilla'],
+    '라스베이거스': ['Now You See Me', 'The Hangover', 'Step Up All In', 'The Big Short', 'what happens in vegas'],
     '워싱턴': ['The Bourne Legacy','Suicide Squad', 'The Silence of the Lambs', 'Mission: Impossible – Rogue Nation'],
     '시카고': ['Chicago', 'When Harry Met Sally'],
     '캐나다': ['3 Needles', 'The Time Travelers Wife', 'Catch Me If you can', 'Mean Girls', 'Brokeback Mountain', 'Cool Running', 'superman  III', 'The Twilight Saga: New Moon', 'X-Men: Last Stand', 'One Week'],
