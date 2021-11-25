@@ -37,12 +37,8 @@
               </form>
 							<div class="PostEditLast">
 								<div class="pull-right">
-<<<<<<< HEAD
 									<a class="register-btn" @click="createAction">등록 <i class="fas fa-check"></i></a>
                   <router-link class="register-btn" :to="{ name: 'Moviedetail', params: { movie_pk:movie.id } }">목록 <i class="fas fa-check"></i></router-link>
-=======
-									<a class="register-btn" @click="isValid">등록 <i class="fas fa-check"></i></a>
->>>>>>> profile
 								</div>
 								<div class="clearfix"></div>
 							</div>

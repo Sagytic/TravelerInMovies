@@ -11,13 +11,9 @@
 							<input type="password" id="password" v-model="credentials.password" name="pw" placeholder="비밀번호 입력">
 						</div>
 						<div class="login-submit-div mt40">
-<<<<<<< HEAD
 							<a @click="login" id="login-btn" class="pointer">로그인</a>
               <!-- google -->
               <div class="g-signin2" id="google-signin-btn" data-onsuccess="onSignIn" data-width="385" data-longtitle="true"></div>
-=======
-							<a @click.prevent="isValid" id="login-btn" class="pointer">로그인</a>
->>>>>>> profile
 						</div>
 					</form>
 					<div class="mt10 small-join">
@@ -130,18 +126,9 @@ export default {
     ])
 
   },
-<<<<<<< HEAD
   created(){
     window.onSignIn = this.onSignIn
   },
-=======
-
-  watch: {
-    getUserid (val, userid) {
-      console.log('watched', val, userid)
-    }
-  }
->>>>>>> profile
   // updated: function () {
   //   this.getProfile()
   // }

@@ -70,24 +70,11 @@ export default {
     ...mapState([
       'nickname',
     ]),
-<<<<<<< HEAD
-    toHome: function () {
-      this.isHome = true
-      console.log(this.isHome)
-    },
-    toAnother: function () {
-      this.isHome = false
-      console.log(this.isHome)
-    }
-=======
->>>>>>> profile
   },
   created: function () {
     // 로그인하며 토큰 저장
     const token = localStorage.getItem('jwt')
     const currentUser = localStorage.getItem("username")
-<<<<<<< HEAD
-=======
 
     if (token) {
       this.isLogin = true
@@ -95,7 +82,6 @@ export default {
     }
   },
 
->>>>>>> profile
 
   updated: function () {
     // 로그인하며 토큰 저장
@@ -120,11 +106,8 @@ export default {
 /* 전체 */
 html {
   font-size: 16px;
-<<<<<<< HEAD
   min-width: fit-content;
   min-height: 100%;
-=======
->>>>>>> profile
 }
 body {
   background: #37373d;
@@ -136,10 +119,6 @@ body {
   color:white;
 }
 .container {
-<<<<<<< HEAD
-=======
-
->>>>>>> profile
   color:white;
 }
 section {
