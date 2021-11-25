@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!-- <section>
-			<button type="button" name="button" class="ac-sub-go-top"><i class="fas fa-arrow-up"></i></button>
-			<div class="clearboth"></div>
-		</section> -->
 
 		<section>
 			<div class="container">
@@ -18,15 +14,14 @@
 							</div>
 							<div class="col-md-8">
 								<div class="fundding-info" v-bind="movie">
-									<div class="item-moneybar"></div>
 									<div class="fundding-amount mt10">
                     <h1 class="">{{movie.title}}</h1>
-                    <span class="fundding-stat">개봉중</span>
+                    <span class="fundding-stat"></span>
                   </div>
 									<div class="mt40">
 										<span class="info-text">평점</span> 
                     <br>
-										<span class="info-now mr5">{{ movie.vote_avg }}/10</span> 
+										<span class="info-now mr5">{{ movie.vote_avg }} / 10</span> 
                     <br>
 										<span class="info-goal">{{ movie.vote_count }} Ratings</span>
 									</div>
@@ -35,12 +30,12 @@
                     <br>
 										<span class="info-now mr5">{{ movie.overview}}</span> 
 										<br>
-                    <span class="info-goal">2021.11.25종료</span>
+                    <span class="info-goal"></span>
 									</div>
 									<div class="mt40 btn-warp">
-										<button type="button" class="like-btn"><i class="fas fa-heart"></i> 121</button>
+										<!-- <button type="button" class="like-btn"><i class="fas fa-heart"></i> 121</button>
 										<a class="massege-btn" href="">찜하기</a>
-										<a class="share-btn" href="">공유하기</a>
+										<a class="share-btn" href="">공유하기</a> -->
 									</div>
 								</div>
 							</div>
@@ -66,7 +61,7 @@
                 </div>
                 <div class="pull-right">
                   <router-link :to="{ name: 'Moviereviewswrite', params: { movie_pk:movie.id, username:getusernamei } }" >
-                    <button type="button" class="btn btb-default">글쓰기</button>
+                    <button type="button" class="btn btb-default" style="background:white; color:black;">글쓰기</button>
                   </router-link>
                 </div>
                 <div class="clearfix"></div>
@@ -90,29 +85,19 @@
                 <div class="community-card-body">
                   <div class="commu-content" v-html="review.content">
                   </div>
-                  <div class="gmflrp"></div>
                 </div>
               </div>
               <div class="more-content mt20">
-                <router-link :to="{ name: 'Moviereviews', params: { movie_pk:movie.id, username:getusernamei, review_pk: review.id} }">더 보기</router-link>
+                <router-link :to="{ name: 'Moviereviews', params: { movie_pk:movie.id, username:getusernamei, review_pk: review.id} }" 
+                style="color:white; text-decoration: none;">더 보기</router-link>
               </div>
               <div class="community-card-foot mt10">
                 <i class="fas fa-comment"></i>&nbsp;{{review.comments_count}}
               </div>
             </div>
             <div>
-              <!-- <div class="mt-3">
-                <b-pagination
-                  v-model="currentPage"
-                  :total-rows="pageall.total_pages"
-                  :per-page="1"
-                  first-number
-                  last-number
-                  aria-controls="project-content"
-                ></b-pagination>
-              </div> -->
               <div class="overflow-auto">
-                <b-pagination-nav :link-gen="linkGen" :number-of-pages="pageall.total_pages" use-router></b-pagination-nav>
+                <b-pagination-nav :link-gen="linkGen" :number-of-pages="pageall.total_pages" align="center" use-router></b-pagination-nav>
               </div>
             </div>
             <!--  -->
@@ -186,6 +171,7 @@ export default {
         console.log(res.data.length),
         this.pageall = res.data[res.data.length - 1],
         res.data.pop(),
+       res.data[0].content = res.data[0].content.substring(0, 50)
         this.reviews = res.data
       })
       .catch(err => {
@@ -232,5 +218,8 @@ export default {
 <style scoped>
 .funding-amount {
   font-family: "Black Han Sans", sans-serif;
+}
+.content-section {
+  min-height: 350px;
 }
 </style>

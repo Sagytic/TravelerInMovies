@@ -15,7 +15,7 @@ movie_data = {
     '멕시코': ['No Country for Old Men','Life of Pi', 'Fast & Furious', 'Sicario', 'Once Upon a Time in Mexico', 'Kill Bill: Volume 1', 'From Dusk Till Dawn', 'Godzilla: King of the Monsters', 'The Perfect Game', 'Coco'],
     '라스베이거스': ['Now You See Me', 'The Hangover', 'Step Up All In', 'The Big Short', 'what happens in vegas', '21', 'Leaving Las Vegas', 'sleepless', 'smokin aces'],
     '워싱턴': ['The Bourne Legacy','Suicide Squad', 'The Silence of the Lambs', 'Mission: Impossible – Rogue Nation', '포레스트 검프', 'Night at the Museum: Battle of the Smithsonian', 'Spider-Man: Homecoming', 'Captain America: The Winter Soldier'],
-    '시카고': ['Chicago', 'When Harry Met Sally', '나 홀로 집에 2', 'meet the parents', 'Source code', 'transformer 3', 'The dark knight', 'The Weather Man'],
+    '시카고': ['Chicago', 'When Harry Met Sally', '나 홀로 집에 2: 뉴욕을 헤매다', 'meet the parents', 'Source code', 'transformer 3', 'The dark knight', 'The Weather Man'],
     '캐나다': ['3 Needles', 'The Time Travelers Wife', 'Catch Me If you can', 'Mean Girls', 'Brokeback Mountain', 'Cool Running', 'superman  III', 'The Twilight Saga: New Moon', 'X-Men: Last Stand', 'One Week'],
     '칠레': ['Pacto de fuga', 'Colonia', 'The 33', 'The Motorcycle Diaries', 'El Club', 'Aftershock', 'Its Raining on Santiago', 'violeta went to heaven', 'Mi Mejor Enemigo'],
     '일본': ['Wife of a Spy', 'The Town Where Only I Am Missing', 'Asako', 'Our Little Sister', 'Lost In Translation', 'Love Letter', 'The Sea of Trees', 'Good&Bye', 'Anarchist from Colony', 'Memoirs of a Geisha'],

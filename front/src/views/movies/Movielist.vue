@@ -21,9 +21,8 @@
 										</a>
 									</div>
                   </router-link>
-									<div class="item-funddingstat" style="height:60px;">
+									<div class="item-funddingstat" style="height:60px; margin-top:15px; text-align:center;">
 										<span class="fundding-amount">{{movie.title}}</span>
-										<span class="percent">{{movie.vote_avg}}/10</span>
 									</div>
 								</div>
 							</div>
@@ -194,13 +193,13 @@ export default {
 .remote-box {
   position:fixed; 
   width:165px; 
-  height:400px; 
+  height:185px; 
   border-radius: 5px;
   border:10px solid #dbdbdb;
   background: white;
   z-index:100;
-  right:7%;
-  top:135px;
+  right:5%;
+  top:170px;
 }
 
 .remote-box-top {
@@ -223,6 +222,7 @@ export default {
 .dropdown-toggle {
   width:100%;
   background:#dbdbdb;
+  border:1px solid white;
 }
 
 .remote-box-page {
@@ -237,18 +237,6 @@ export default {
 	width:38px;
 	height:38px;
 	margin-right: 10px;
-}
-.ac-sub-go-top{
-  width: 30px;
-  height: 30px;
-  bottom:calc(50% - 35px);
-  position: fixed;
-  right: calc((100% - 1200px)/ 2 - 80px);
-  display: inline-block;
-  background:rgba(255,255,255,0.7);
-  border: none;
-  background-size: 50%;
-  display: none;
 }
 
 .categorydiv{
@@ -332,9 +320,6 @@ export default {
 	color:#ff9696;
 }
 
-.listdiv{
-	margin-top:24px;
-}
 .item-h{
 	margin-top:50px;
 	position:relative;
@@ -414,10 +399,9 @@ export default {
 	height:35px;
 }
 .fundding-amount{
-  margin-left:20%;
 	line-height:27px;
 	color:#ff9696;
-	font-size:20px;
+	font-size:23px;
 	font-weight:700;
 	margin-top:18px;
 	letter-spacing:2px;
@@ -462,18 +446,6 @@ export default {
   margin-right: 10px;
 }
 
-.ac-sub-go-top {
-  width: 30px;
-  height: 30px;
-  bottom: calc(50% - 35px);
-  position: fixed;
-  right: calc((100% - 1200px)/ 2 - 80px);
-  display: inline-block;
-  background: rgba(255,255,255,0.7);
-  border: none;
-  background-size: 50%;
-  display: none;
-}
 
 .sitelogo {
   width: 100%;

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div>
+    <div style="">
       <b-navbar toggleable="lg" type="dark" variant="black" style="padding:0;">
         <b-navbar-nav>
           <!-- <span style="color:white"> Traveler in Movies </span> -->
@@ -72,26 +72,6 @@ export default {
       this.username = currentUser
     }
   },
-  created: function () {
-    // 로그인하며 토큰 저장
-    const token = localStorage.getItem('jwt')
-    const currentUser = localStorage.getItem("username")
-
-    if (token) {
-      this.isLogin = true
-      this.username = currentUser
-    }
-  },
-  created: function () {
-    // 로그인하며 토큰 저장
-    const token = localStorage.getItem('jwt')
-    const currentUser = localStorage.getItem("username")
-
-    if (token) {
-      this.isLogin = true
-      this.username = currentUser
-    }
-  },
   updated: function () {
     // 로그인하며 토큰 저장
     const token = localStorage.getItem('jwt')
@@ -115,27 +95,29 @@ export default {
 /* 전체 */
 html {
   font-size: 16px;
-  background: #37373d;
+  min-width: fit-content;
+  min-height: 100%;
 }
 body {
   background: #37373d;
+  min-width: fit-content;
+  min-height: 100%;
 }
 .containers {
   background: #1e1e1e;
   color:white;
 }
 .container {
-  background: #1e1e1e;
   color:white;
 }
 section {
   background: #1e1e1e;
 }
-input {
+input, textarea {
   color:black;
 }
 a {
-  text-decoration: npne;
+  text-decoration: none;
 }
 #app {
   font-family: 'Roboto' ,'Noto Sans KR', 'sans-serif';
@@ -144,6 +126,9 @@ a {
   /* text-align: center; */
   color: #2c3e50;
   /* background: #1e1e1e; */
+  min-width: fit-content;
+  min-height: fit-content;
+  
 }
 
 #nav {
@@ -345,7 +330,7 @@ section {
 }
 
 .listdiv{
-	margin-top:24px;
+  margin-top:75px;
   background:#1e1e1e;
 }
 .item-h{
@@ -610,7 +595,7 @@ section {
 .writer-info {
 
   padding: 30px;
-  background: #fff;
+  background: #1e1e1e;
   border: 1px solid #dbdbdb;
 }
 
@@ -622,9 +607,10 @@ section {
   max-width: 100%;
 }
 
-.project-content {
+/* .project-content {
   margin-bottom: 60px;
-}
+} */
+
 .community-card {
   position: relative;
 }
@@ -650,9 +636,9 @@ section {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 50px;
+  height: 60px;
   z-index: 200;
-  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 45%, rgb(255, 255, 255));
+  /* background: linear-gradient(rgba(255, 255, 255, 0.212), rgba(255, 255, 255, 0.5) 45%, rgb(255, 255, 255)); */
   content: "";
 }
 .more-content {
@@ -734,13 +720,15 @@ section {
 }
 
 .register-btn {
-  color: #FF9696;
+  color: black;
   background: #ffffff;
   border: 1px solid #FF9696;
   padding: 15px 40px;
   margin: 20px 0;
   font-size: 16px;
   display: inline-block;
+  text-decoration: none;
+  margin-right:20px;
 }
 
 .community_wb {
