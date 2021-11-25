@@ -548,6 +548,7 @@ export default {
   /* z-index: -1; */
   width: 100%;
   height: 20vw;
+  margin-top: 87px;
   /* background-repeat: no-repeat;
   background-position: center; */
 }

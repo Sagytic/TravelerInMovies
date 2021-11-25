@@ -231,4 +231,8 @@ export default {
 .community-card-body-review {
     min-height: 30px;
 }
+.funding-amount {
+  font-family: "Black Han Sans", sans-serif;
+}
 </style>
+

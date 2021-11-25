@@ -214,3 +214,18 @@ export default {
 	margin:auto;
 }
 </style>
+<style scoped>
+html {
+	background: #37373d;
+}
+body {
+	background: #37373d;
+}
+#app {
+	background: #37373d;
+}
+section {
+  height:1400px;
+	background: #37373d;
+}
+</style>

@@ -35,6 +35,7 @@
     "vue-circle-slider": "^1.0.2",
     "vue-fab": "^2.3.1",
     "vue-float-action-button": "^0.7.9",
+    "vue-google-login": "^2.0.5",
     "vue-router": "^3.5.3",
     "vue-swal": "^1.0.0",
     "vue-videobg": "^2.0.0",

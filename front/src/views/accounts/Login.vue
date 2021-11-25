@@ -12,6 +12,8 @@
 						</div>
 						<div class="login-submit-div mt40">
 							<a @click="login" id="login-btn" class="pointer">로그인</a>
+              <!-- google -->
+              <div class="g-signin2" id="google-signin-btn" data-onsuccess="onSignIn" data-width="385" data-longtitle="true"></div>
 						</div>
 					</form>
 					<div class="mt10 small-join">
@@ -23,6 +25,9 @@
 					</div>
 				</div>
 			</div>
+
+    <!-- google logout -->
+    <!-- <button @click="authInst">logout</button> -->
 		</section>
 </template>
 
@@ -50,6 +55,17 @@ export default {
       'getReviewsMovieInfo',
       'getReviewsMovieGenreCountry',
 		]),
+    // google
+    onSignIn(googleUser){
+      const profile = googleUser.getBasicProfile();
+      console.log('ID Token: ', googleUser.getAuthResponse().id_token)
+      console.log('Name: ' + profile.getName())
+    },
+    signout() {
+      const authInst = window.gapi.auth2.getAuthInstance();
+      // eslint-disable-next-line
+      console.log(authInst);
+    },
 
     login: function () {
       axios({
@@ -80,8 +96,16 @@ export default {
         })
     }
   },
+  created(){
+    window.onSignIn = this.onSignIn
+  },
   // updated: function () {
   //   this.getProfile()
   // }
 }
 </script>
+<style scoped>
+section {
+  min-height:900px;
+}
+</style>
