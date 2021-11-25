@@ -34,7 +34,7 @@
               </form>
 							<div class="PostEditLast">
 								<div class="pull-right">
-									<a class="register-btn" @click="createAction">등록 <i class="fas fa-check"></i></a>
+									<a class="register-btn" @click="isValid">등록 <i class="fas fa-check"></i></a>
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -65,6 +65,8 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/vue-editor';
 import { mapState, mapActions} from 'vuex'
 import VueCircleSlider from 'vue-circle-slider'
+import Swal from 'sweetalert2'
+
 Vue.use(VueCircleSlider)
 
 
@@ -75,6 +77,7 @@ export default {
   },
   data: function () {
     return {
+      rankTierImage: require(`@/assets/rank_tiers.png`),
       movie: null,
       tokenHeader: null,
       review: {
@@ -89,12 +92,34 @@ export default {
     ...mapActions([
 			// 'loginGetToken',
       'userRankpointUpdate',
+      'getProfile',
       'getReviewsGenre',
       'getReviewsCountry',
       'getReviews',
       'getReviewsMovieInfo',
+      'getReviewsMovieGenreCountry',
 		]),
+    isValid() {
+      if (this.rank_point < 200 && ( this.sliderValue < 20 || this.sliderValue > 80) ) {
+        Swal.fire({
+            title: '<strong><u>더 강해져서 돌아오세요...?!</u></strong>',
+            html: '<span style="color:red">골드 미만은 20~80점만 가능합니다!</span>',
+            imageUrl: this.rankTierImage,
+            imageWidth: 1400,
+            imageHeight: 400,
+            padding: '1em',
+            imageAlt: 'Custom image',
+          })
+        
+      } else {
+        this.createAction()
+      }
+    },
     createAction() {
+      // 유저 랭크에 따라서 리뷰 점수 가능 여부 판단
+      // 유저 점수가 200점 미만인 20점 미만 80 점을 줄 수  없음
+      // const ranktierImage = '@/assets/rank_tiers.png'
+      
       this.review.movie_id = this.movie.id
       this.review.rank = this.sliderValue
       var content = this.$refs.toastuiEditor.invoke("getHTML");
@@ -115,16 +140,31 @@ export default {
           // this.rank_point += 10
           const formData = new FormData()
           formData.append('rank_point', this.rank_point+10)
+          formData.append('username', localStorage.getItem('username'))
           this.userRankpointUpdate(formData)
-          this.getReviewsGenre()
-          this.getReviewsCountry()
-          this.getReviews()
-          this.getReviewsMovieInfo()
+          this.getProfile().then((result) => {
+            console.log(result)
+            this.getReviewsGenre()
+            this.getReviewsCountry()
+            this.getReviews()
+            this.getReviewsMovieInfo()
+            this.getReviewsMovieGenreCountry()
+
+          })
+          
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Point +10!!',
+            showConfirmButton: false,
+            timer: 1500
+          })
         })
         .catch(err => {
           // 에러출력
           console.log(err)
         })
+
     }
   },
   props: {

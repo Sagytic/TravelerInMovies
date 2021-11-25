@@ -34,7 +34,9 @@ const routes = [
   {
     path: '/accounts/profile',
     name: 'Profile',
-    component: Profile
+    component: Profile,
+    props: true
+
   },
   {
     path: '/movies',

@@ -3,7 +3,7 @@ from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import response
 
-from accounts import serializers
+from django.core import serializers
 from .models import Movie, Preference, Review, Comment, Genre, Director, Actor, VoteRate
 from .serializers import UserProfileSerializer, MovieListSerializer, MovieSerializer, ReviewSerializer, CommentSerializer, GenreSerializer, DirectorSerializer, ActorSerializer, VoteRateSerializer
 from django.contrib.auth import get_user_model

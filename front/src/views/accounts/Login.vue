@@ -11,7 +11,7 @@
 							<input type="password" id="password" v-model="credentials.password" name="pw" placeholder="비밀번호 입력">
 						</div>
 						<div class="login-submit-div mt40">
-							<a @click="login" id="login-btn" class="pointer">로그인</a>
+							<a @click.prevent="isValid" id="login-btn" class="pointer">로그인</a>
 						</div>
 					</form>
 					<div class="mt10 small-join">
@@ -28,15 +28,16 @@
 
 <script>
 import axios from 'axios'
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters, mapState} from 'vuex'
+import swal from 'sweetalert'
 
 export default {
   name: 'Login',
   data: function () {
     return {
       credentials: {
-        username: null,
-        password: null,
+        username: '',
+        password: '',
       }
     }
   },
@@ -51,21 +52,37 @@ export default {
       'getReviewsMovieGenreCountry',
 		]),
 
+    isValid: function () {
+
+      if (this.credentials.username === '') {
+        swal ('아이디를 입력하세요.', {
+          dangerMode: true,
+        })
+      } else if (this.credentials.password === '') {
+        swal ('비밀번호를 입력하세요.', {
+          dangerMode: true,
+        })
+      } else {
+        this.login()
+      }
+    },
+
     login: function () {
-      axios({
+      
+        axios({
         method: 'post',
         url: 'http://127.0.0.1:8000/accounts/api-token-auth/',
         data: this.credentials
-      })
+        })
         .then(res => {
           console.log(this.credentials)
           localStorage.setItem('jwt', res.data.token)
           localStorage.setItem('username', this.credentials.username)
           this.$emit('login')
-          console.log(res.data.token)
           this.loginGetToken()
           // this.setToken()
           this.getProfile()
+          console.log('userid', this.userid)
           this.getReviewsGenre()
           this.getReviewsCountry()
           this.getReviews()
@@ -76,10 +93,29 @@ export default {
           
         })
         .catch(err => {
+          swal ('회원 정보가 일치하지 않습니다.', {
+          dangerMode: true,
+        })
           console.log(err)
         })
-    }
+      }
+  
   },
+  computed: {
+    ...mapGetters([
+      'getUserid'
+    ]),
+    ...mapState([
+      'userid'
+    ])
+
+  },
+
+  watch: {
+    getUserid (val, userid) {
+      console.log('watched', val, userid)
+    }
+  }
   // updated: function () {
   //   this.getProfile()
   // }

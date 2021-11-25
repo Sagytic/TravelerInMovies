@@ -10,11 +10,39 @@
 <script>
 // import axios from 'axios'
 import ProfileInfo from '@/components/Profile/ProfileInfo'
+// import {mapActions, mapGetters} from 'vuex'
+
 export default {
 	name: 'Profile',
 	components: {
 		ProfileInfo,
 	},
+	// method: {
+	// 	...mapActions([
+	// 	// 'loginGetToken',
+  //   'getProfile',
+  //   'getReviewsGenre',
+  //   'getReviewsCountry',
+  //   'getReviews',
+  //   'getReviewsMovieInfo',
+  //   'getReviewsMovieGenreCountry',
+	// 	]),
+	// },
+
+	// mounted: function () {
+	// 	this.getProfile()
+	// 	this.getReviewsGenre()
+  //   this.getReviewsCountry()
+  //   this.getReviews()
+  //   this.getReviewsMovieInfo()
+  //   this.getReviewsMovieGenreCountry()
+	// },
+
+	// computed:  {
+	// 	...mapGetters([
+	// 		'getUserId'
+	// 	])
+	// }
 }
 </script>
 
