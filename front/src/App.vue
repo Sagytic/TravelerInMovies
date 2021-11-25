@@ -4,12 +4,12 @@
       <b-navbar toggleable="lg" type="dark" variant="black" style="padding:0;">
         <b-navbar-nav>
           <!-- <span style="color:white"> Traveler in Movies </span> -->
-          <b-nav-item :to="{ name: 'Home' }"><img src="@/assets/TimbyLogoster-removebg.png" alt="" style="width:7.5rem;"></b-nav-item>
+          <b-nav-item @click="toHome()" :to="{ name: 'Home' }"><img src="@/assets/TimbyLogoster-removebg.png" alt="" style="width:7.5rem;"></b-nav-item>
         </b-navbar-nav>
           <!-- Right aligned nav items -->
           <span v-if="isLogin">
             <b-navbar-nav class="ml-auto">
-                <b-nav-item :to="{ name: 'Profile' }">Profile</b-nav-item>
+                <b-nav-item @click="toAnother()" :to="{ name: 'Profile' }">Profile</b-nav-item>
                 <b-nav-item @click="logout" to="#">Logout</b-nav-item>
             </b-navbar-nav>
           </span>
@@ -17,21 +17,21 @@
             <b-navbar-nav class="ml-auto">
               <li class="nav-item"><a href="http://localhost:8080/accounts/signup" aria-current="page" class="nav-link router-link-exact-active router-link-active" target="_self">Signup</a></li>
               <!-- <b-nav-item :to="{ name: 'Signup' }">Signup</b-nav-item> -->
-              <b-nav-item :to="{ name: 'Login' }">Login</b-nav-item>
+              <b-nav-item @click="toAnother()" :to="{ name: 'Login' }">Login</b-nav-item>
             </b-navbar-nav>
           </span>
             <b-navbar-nav class="ml-auto">
-              <b-nav-item :to="{ name: 'Movielist' }">Movielist</b-nav-item>
+              <b-nav-item @click="toAnother()" :to="{ name: 'Movielist' }">Movielist</b-nav-item>
             </b-navbar-nav>
-      <div style="color:white; margin-left:auto; margin-right:20px;">
-        <span v-if="isLogin">
-          {{nickname()}} 님의 선호도를 반영한 추천 목록입니다🥰
-        </span>
-        <span v-else>
-          무작위로 추천된 9개의 영화로 떠나볼까요?🥰
-        </span>
-      </div>
-      </b-navbar>
+            <div style="color:white; margin-left:auto; margin-right:20px;">
+              <span v-if="isLogin">
+                {{nickname()}} 님, 반갑습니다.🥰
+              </span>
+              <span v-else>
+                TiM에 오신것을 환영합니다🥰
+              </span>
+            </div>
+            </b-navbar>
     </div>
 
     <!-- 로그인이 되었을 때 물리적인 렌더링도 변경 -->
@@ -47,6 +47,7 @@ export default {
     return {
       isLogin: false,
       username: null,
+      isHome: true
     }
   },
   methods: {
@@ -61,6 +62,14 @@ export default {
     ...mapState([
       'nickname',
     ]),
+    toHome: function () {
+      this.isHome = true
+      console.log(this.isHome)
+    },
+    toAnother: function () {
+      this.isHome = false
+      console.log(this.isHome)
+    }
   },
   created: function () {
     // 로그인하며 토큰 저장
