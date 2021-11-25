@@ -6,7 +6,7 @@
       <div style="position:absolute left:0px top: 0px width:100%; height:100%; background: center center / cover no-repeat;" v-else :style="{ 'background-image': 'url(' + background_image + ')' }"></div>
       <!-- 프로필 사진 및 랭크 뱃지 -->
       <div id="header" style="position: relative; top:-5vw; left:10vw;">
-        <div class="avatar" style="position:absolute; width:10rem; height:10rem;">
+        <div class="avatar" style="position:absolute; width:10rem; height:10rem; z-index:2;">
           <el-tooltip content="프로필을 수정하시겠습니까?" effect="dark" placement="top">
             <a data-bs-toggle="modal" data-bs-target="#profileModal" @click="initModal" style="z-index:1;">
               <img style="position:absolute" v-if="profile_image === `${SERVER_URL}null`" src='@/assets/user-account.png' alt="" class="profile-image">
@@ -156,64 +156,54 @@
           </el-tabs>
       </div>
     </div>
-
-    <div class="infinite-list-wrapper" style="overflow:auto; position:relative;">
+    <div style="overflow:auto; position:relative;">
       <hr>
-      
-      <ul
-        class="list"
-        v-infinite-scroll="load"
-        infinite-scroll-disabled="disabled">
-        <!-- 유저가 작성한 리뷰 목록 스크롤링 -->
-        <!-- <div v-if="true" class="container" style="margin:0; padding:0;"> -->
-          <div class="container" style="position:relative">
-            <p style="font-size: 45px;">{{nickname}}님의 전체 리뷰 목록</p>
-            <div class="card h-100" v-for="i in count" :key="i.id" >
-              <div class="row g-0 text-white bg-dark">
-                <div style="position:absolute; width: 10%; left: 88%; top: 90%;  z-index:1; font-size: 2vw;">
-                  <router-link :to="{ name: 'Moviereviews' }">더 보기</router-link>
+    <!-- 유저가 작성한 리뷰 목록 스크롤링 -->
+    <!-- <div v-if="true" class="container" style="margin:0; padding:0;"> -->
+      <div class="container" style="position:relative">        
+        <p style="font-size: 45px; font-family: 'Black Han Sans', sans-serif; color: black;">{{nickname}}님의 전체 리뷰 목록</p>
+        <div class="card h-100" v-for="(c,i) in count" :key="i.id" >
+          <div class="row g-0 text-white bg-dark">
+            <div style="position:absolute; width: 10%; left: 88%; top: 90%;  z-index:1; font-size: 2vw;">
+              <router-link :to="{ name: 'Moviedetail', params: { movie_pk:reviews[i].movie}  }">더 보기</router-link>
+            </div>
+            <div class="col-md-3">
+              <img :src="review_movies[i].poster_path" alt="" class="img-fluid rounded-start">
+            </div>
+            <div class="col-md-9">
+              <div class="card-body">
+                <h1 class="card-title text-white" style="font-family: 'Black Han Sans', sans-serif';">
+                  {{review_movies[i].title}}
+                </h1>
+                <h2 class="card-text text-white d-inline"><b-icon icon="geo-alt" animation="cylon" font-scale="1" variant="success"></b-icon>
+                  {{review_movies[i].country_name}} | 
+                </h2>
+                <h2 class="d-inline card-text text-white"><i class="el-icon-video-camera-solid"></i>
+                  <span v-for="genre in review_movies[i].genre_names" :key="genre.id">
+                    <span>{{genre}} | </span>
+                  </span>
+                </h2>
+                <div class="card-text mt-3">
+                  <h2 class="commu-writer text-white">리뷰 제목: {{reviews[i].title}}</h2>
+                  <h3 class="commu-writedate">작성일: {{reviews[i].created_at.substr(0, 16) | dateFilter }}</h3>
+                  <h3 class="commu-rank">평점: {{reviews[i].rank}}%</h3>
+                  <div class="commu-content" style="font-size:20px;" v-html="reviews[i].content"></div>
+                  <!-- <div class="">
+                  <i class="fas fa-comment"></i>&nbsp;55
+                  </div> -->
                 </div>
-                <div class="col-md-3">
-                  <img :src="review_movies[i].poster_path" alt="" class="img-fluid rounded-start">
-                </div>
-                <div class="col-md-9">
-                  <div class="card-body">
-                    <h1 class="card-title text-white" style="font-family: 'Black Han Sans', sans-serif';">
-                      {{review_movies[i].title}}
-                    </h1>
-                    <h2 class="card-text text-white d-inline"><b-icon icon="geo-alt" animation="cylon" font-scale="1" variant="success"></b-icon>
-                      {{review_movies[i].country_name}} | 
-                    </h2>
-                    <h2 class="d-inline card-text text-white"><i class="el-icon-video-camera-solid"></i>
-                      <span v-for="genre in review_movies[i].genre_names" :key="genre.id">
-                        <span>{{genre}} | </span>
-                      </span>
-                    </h2>
-                    <div class="card-text mt-3">
-                      <h2 class="commu-writer text-white">리뷰 제목: {{reviews[i].title}}</h2>
-                      <h3 class="commu-writedate">작성일: {{reviews[i].created_at.substr(0, 16) | dateFilter }}</h3>
-                      <h3 class="commu-rank">평점: {{reviews[i].rank}}%</h3>
-                      <div class="commu-content" style="font-size:20px;" v-html="reviews[i].content"></div>
-                      <!-- <div class="">
-                      <i class="fas fa-comment"></i>&nbsp;55
-                      </div> -->
-                    </div>
-                  </div>
-                </div>
-                            
-                  <!-- 리뷰 표시 끝 -->
-              </div>  
-            </div>   
-          </div>
-        <!-- </div> -->
-        <!-- <li v-for="review in reviews" :key="review.id" class="list-item">{{ review.title }}</li> -->
-      </ul>
-      <p style="text-align: center; font-size: 45px;" v-if="loading">Loading...</p>
-      <p style="text-align: center; font-size: 45px;" v-if="noMore">No more!</p>
+              </div>
+            </div>                           
+              <!-- 리뷰 표시 끝 -->
+          </div>  
+        </div>   
+      </div>
+    <!-- </div> -->
+    <!-- <li v-for="review in reviews" :key="review.id" class="list-item">{{ review.title }}</li> -->
+    <p style="text-align: center; font-size: 45px;">No more!</p>
     </div>
-
-
-    </div> <!--background-div 끝-->
+  </div>
+  <!--background-div 끝-->
     
     
     <div>
@@ -298,6 +288,7 @@ export default {
   },
   data: function () {
     return {
+      username: localStorage.getItem('username'),
       max_reviews_genre: '',
       max_reviews_country: '',
       min_random_country: '',
@@ -337,7 +328,6 @@ export default {
         ],
       },
       count: 0,
-      loading: false,
       genres_name: [],
       countries_name: [],
       genres_size : 0,
@@ -367,14 +357,7 @@ export default {
     }
   },
   methods: {
-    // infinite scroll
-    load () {
-      this.loading = true
-      setTimeout( () => {
-        this.count += 1
-        this.loading = false
-      }, 200)
-    },
+
     getRandomMovie: function () {
       const token = {'Authorization': `JWT ${this.jwtToken}`}
       axios({
@@ -426,6 +409,7 @@ export default {
         formData.append('profile_image', this.credentials.newProfileImage)
         formData.append('background_image', this.credentials.newBackgroundImage)
         formData.append('rank_point', this.rank_point)
+        formData.append('username', this.username)
         this.profileUpdate(formData)
       }
     },
@@ -509,12 +493,6 @@ export default {
       'review_movies_country',
       'hover_idx',
     ]),
-    noMore () {
-      return this.count >= _.size(this.reviews)-1
-    },
-    disabled () {
-      return this. loading || this.noMore
-    },
 
   },
 
@@ -526,6 +504,7 @@ export default {
     this.countries_name = Object.keys(this.countries_cnt)
     this.genres_size = _.size(this.genres_name)
     this.countries_size = _.size(this.countries_name)
+    this.count = _.size(this.reviews)
   },
 
   // substr 로 대체 가능

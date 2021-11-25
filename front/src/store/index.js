@@ -43,6 +43,22 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    INIT_DATA: function (state) {
+      state.jwtToken = localStorage.getItem("jwt"),
+      state.nickname = '',
+      state.profile_image = '',
+      state.background_image = '',
+      state.rank_point = null,
+      state.userid  = null,
+      state.genres_cnt = {},
+      state.countries_cnt = {},
+      state.reviews = [],
+      state.review_movies = [],
+      state.review_movies_genre = [],
+      state.review_movies_country = [],
+      state.hover_idx = 0,
+      state.usernamei = localStorage.getItem("username")
+    },
     LOGIN_GET_TOKEN: function (state) {
       state.jwtToken = localStorage.getItem("jwt")
     },
@@ -72,11 +88,11 @@ export default new Vuex.Store({
       state.review_movies_genre = data.genre
       state.review_movies_country = data.country
     },
-    GET_CHART_HOVER_IDX: function(state, data) {
-      state.hover_idx = data
-    }
   },
   actions: {
+    initData: function ({commit}) {
+      commit("INIT_DATA")
+    },
     loginGetToken: function ({commit}) {
       commit("LOGIN_GET_TOKEN")
     },
@@ -112,7 +128,8 @@ export default new Vuex.Store({
           const profile_image = `${SERVER.URL}` + res.data.profile_image
           const background_image = `${SERVER.URL}` + res.data.background_image
           const rank_point = res.data.rank_point
-          commit("GET_PROFILE", {nickname, profile_image, background_image, rank_point})
+          const username = res.data.username
+          commit("GET_PROFILE", {username, nickname, profile_image, background_image, rank_point})
         })
         .catch( err => {
           swal(err.response.data.error, {
@@ -122,56 +139,68 @@ export default new Vuex.Store({
 
     },
     getReviewsGenre: function ({commit, getters}) {
-      axios({
-        method: "get",
-        url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/genre/`,
-        headers: getters.config,
-      })
-        .then( res => {
-          commit("GET_REVIEWS_GENRE", res.data)
+
+      setTimeout(() => {
+        axios({
+          method: "get",
+          url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/genre/`,
+          headers: getters.config,
+          
         })
-        .catch( err => {
-          console.log(err)
-        })
+          .then( res => {
+            commit("GET_REVIEWS_GENRE", res.data)
+          })
+          .catch( err => {
+            console.log(err)
+          })
+      }, 0)
+    
     },
     getReviewsCountry: function ({commit, getters}) {
-      axios({
-        method: "get",
-        url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/country/`,
-        headers: getters.config,
-      })
-        .then( res => {
-          commit("GET_REVIEWS_COUNTRY", res.data)
+
+      setTimeout(() => {
+        axios({
+          method: "get",
+          url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/country/`,
+          headers: getters.config,
         })
-        .catch( err => {
-          console.log(err)
-        })
+          .then( res => {
+            commit("GET_REVIEWS_COUNTRY", res.data)
+          })
+          .catch( err => {
+            console.log(err)
+          })
+      },0)
     },
     getReviews: function ({commit, getters}) {
-      axios({
-        method: "get",
-        url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/`,
-        headers: getters.config,
-      })
-        .then( res => {
-          commit("GET_REVIEWS", res.data)
+      setTimeout(() => {
+        axios({
+          method: "get",
+          url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/`,
+          headers: getters.config,
         })
-        .catch( err => {
-          console.log(err)
-        })
+          .then( res => {
+            commit("GET_REVIEWS", res.data)
+          })
+          .catch( err => {
+            console.log(err)
+          })
+        },0)
     },
     getReviewsMovieInfo: function ({commit, getters}) {
-      axios({
-        method: "get",
-        url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/movies/`,
-        headers: getters.config,
-      })
-        .then( res => {
-          commit("GET_REVIEWS_MOVIE_INFO", res.data)
+      setTimeout(() => {
+        axios({
+          method: "get",
+          url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/movies/`,
+          headers: getters.config,
         })
-        .catch( err => {
-          console.log(err)
-        })
+          .then( res => {
+            commit("GET_REVIEWS_MOVIE_INFO", res.data)
+          })
+          .catch( err => {
+            console.log(err)
+          })
+        }, 0)
     },
     userRankpointUpdate: function ({commit, getters}, formdata) {
       axios({
@@ -191,22 +220,20 @@ export default new Vuex.Store({
         })
     },
     getReviewsMovieGenreCountry: function ({commit, getters}) {
-      axios({
-        method: "get",
-        url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/genre_country_movies/`,
-        headers: getters.config,
-      })
-        .then( res => {
-          commit("GET_REVIEWS_MOVIE_GENRE_COUNTRY", res.data)
+      setTimeout(() => {
+        axios({
+          method: "get",
+          url: `${SERVER.URL}/accounts/profile/${getters.getUserid.userid}/reviews/genre_country_movies/`,
+          headers: getters.config,
         })
-        .catch( err => {
-          console.log(err)
-        })
+          .then( res => {
+            commit("GET_REVIEWS_MOVIE_GENRE_COUNTRY", res.data)
+          })
+          .catch( err => {
+            console.log(err)
+          })
+        },0)
     },
-    getChartHoverIdx: function({commit}, hover_idx) {
-      console.log(hover_idx)
-      commit("GET_CHART_HOVER_IDX", hover_idx)
-    }
   },
   modules: {
   }

@@ -107,7 +107,7 @@
 
 <script>
 import axios from 'axios'
-import {mapGetters} from 'vuex'
+import {mapActions, mapGetters, mapState} from 'vuex'
 
 export default {
   name: 'Moviereview',
@@ -128,6 +128,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'userRankpointUpdate',
+      'getReviewsGenre',
+      'getReviewsCountry',
+      'getReviews',
+      'getReviewsMovieInfo',
+      'getReviewsMovieGenreCountry',
+		]),
     linkGen(pageNum) {
       return pageNum === 1 ? '?' : `?page_num=${pageNum}`
     },
@@ -149,6 +157,23 @@ export default {
       .then(res => {
         console.log(res.data.length),
         this.review = res.data
+        const formData = new FormData()
+          formData.append('rank_point', this.rank_point-10)
+          formData.append('username', localStorage.getItem('username'))
+          this.userRankpointUpdate(formData)
+          this.getReviewsGenre()
+          this.getReviewsCountry()
+          this.getReviews()
+          this.getReviewsMovieInfo()
+          this.getReviewsMovieGenreCountry()
+
+          Swal.fire({
+            position: 'top-end',
+            icon: 'info',
+            title: 'Point (-10)!!',
+            showConfirmButton: false,
+            timer: 1500
+          })
         this.$router.push({ name: 'Moviedetail' })
       })
       .catch(err => {
@@ -222,6 +247,9 @@ export default {
   computed: {
     ...mapGetters([
       'getusernamei', 
+    ]),
+    ...mapState([
+      'rank_point',
     ])
   },
 }

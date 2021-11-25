@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex'
+import {mapActions, mapGetters, mapState} from 'vuex'
 export default {
   name: 'App',
   data: function () {
@@ -51,10 +51,18 @@ export default {
     }
   },
   methods: {
+    // 로그아웃시 state에 저장된 데이터 초기화 함수
+    ...mapActions([
+			'initData',
+      
+		]),
+
     logout: function () {
       this.isLogin = false
+      this.initData() // 로그아웃시 state 데이터 초기화! kwp
       localStorage.removeItem('jwt')
       localStorage.removeItem("username")
+      localStorage.removeItem("vuex")
       this.username = null
       this.$router.push({ name: 'Login' })
       // 로그아웃하며 토큰 삭제
@@ -62,6 +70,7 @@ export default {
     ...mapState([
       'nickname',
     ]),
+<<<<<<< HEAD
     toHome: function () {
       this.isHome = true
       console.log(this.isHome)
@@ -70,17 +79,24 @@ export default {
       this.isHome = false
       console.log(this.isHome)
     }
+=======
+>>>>>>> profile
   },
   created: function () {
     // 로그인하며 토큰 저장
     const token = localStorage.getItem('jwt')
     const currentUser = localStorage.getItem("username")
+<<<<<<< HEAD
+=======
 
     if (token) {
       this.isLogin = true
       this.username = currentUser
     }
   },
+
+>>>>>>> profile
+
   updated: function () {
     // 로그인하며 토큰 저장
     const token = localStorage.getItem('jwt')
@@ -104,8 +120,11 @@ export default {
 /* 전체 */
 html {
   font-size: 16px;
+<<<<<<< HEAD
   min-width: fit-content;
   min-height: 100%;
+=======
+>>>>>>> profile
 }
 body {
   background: #37373d;
@@ -117,6 +136,10 @@ body {
   color:white;
 }
 .container {
+<<<<<<< HEAD
+=======
+
+>>>>>>> profile
   color:white;
 }
 section {

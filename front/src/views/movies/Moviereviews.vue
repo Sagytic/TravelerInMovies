@@ -52,7 +52,8 @@
               <div class="community-card">
                 <div class="community-card-head">
                   <span>
-                    <img class="user-photo" src="../../assets/user-account.png" >
+                    <img class="user-photo" v-if="review.user.profile_image === `${SERVER_URL}null`" src='@/assets/user-account.png' alt="">
+                    <img class="user-photo" v-else :src="review.user.profile_image" alt="">
                   </span>
                   <div class="commu-write">
                     <span class="commu-writer">제목: {{review.title}}</span><br/>
@@ -101,7 +102,8 @@
               <div class="border-bottom"></div>
 								<div class="user-comment mt20" v-for="comment in comments" v-bind:key='comment.id'>
 									<div class="pull-left">
-										<img class="user-photo" src="../../assets/user-account.png" >
+                    <img class="user-photo" v-if="comment.user.profile_image === 'null'" src='@/assets/user-account.png' alt="">
+                    <img class="user-photo" v-else :src="`${SERVER_URL}`+comment.user.profile_image" alt="">
 									</div>
 									<div class="pull-left comment-content">
 										<p>{{comment.user.nickname}}</p>
@@ -145,12 +147,15 @@
 
 <script>
 import axios from 'axios'
-import {mapGetters} from 'vuex'
+import {mapState, mapActions, mapGetters} from 'vuex'
+import Swal from 'sweetalert2'
+import SERVER from '@/api/server.js'
 
 export default {
   name: 'Moviereview',
   data: function () {
     return {
+      SERVER_URL: SERVER.URL,
       movie: null,
       username: '',
       review: null,
@@ -171,6 +176,14 @@ export default {
     }
   },
   methods: {
+        ...mapActions([
+      'userRankpointUpdate',
+      'getReviewsGenre',
+      'getReviewsCountry',
+      'getReviews',
+      'getReviewsMovieInfo',
+      'getReviewsMovieGenreCountry',
+		]),
     getreviews() {
       let token = localStorage.getItem('jwt')
       let tokenHeader = {}
@@ -216,6 +229,24 @@ export default {
         console.log(res.data.length),
         this.review = res.data
         this.$router.push({ name: 'Moviedetail' })
+
+        const formData = new FormData()
+          formData.append('rank_point', this.rank_point-10)
+          formData.append('username', localStorage.getItem('username'))
+          this.userRankpointUpdate(formData)
+          this.getReviewsGenre()
+          this.getReviewsCountry()
+          this.getReviews()
+          this.getReviewsMovieInfo()
+          this.getReviewsMovieGenreCountry()
+
+          Swal.fire({
+            position: 'top-end',
+            icon: 'info',
+            title: 'Point (-10)!!',
+            showConfirmButton: false,
+            timer: 1500
+          })
       })
       .catch(err => {
         console.log(err)
@@ -353,6 +384,10 @@ export default {
   computed: {
     ...mapGetters([
       'getusernamei', 
+    ]),
+    ...mapState([
+      'profile_image',
+      'rank_point',
     ])
   },
 }

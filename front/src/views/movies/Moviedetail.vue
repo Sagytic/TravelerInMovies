@@ -55,7 +55,9 @@
             <div class="project-content mt40">
               <div class="rmfTmrldiv">
                 <div class="pull-left">
-                  <img class="user-photo" src="../../assets/user-account.png" >
+                  <img class="user-photo" v-if="profile_image === `${SERVER_URL}null`" src='@/assets/user-account.png' alt="">
+                  <img class="user-photo" v-else :src="profile_image" alt="">
+                  <!-- <img class="user-photo" src="../../assets/user-account.png" > -->
                   <span v-if="isLogin">{{username}}님 영화에 대한 리뷰를 작성해주세요~</span>
                   <span v-else>로그인한 유저만 글을 쓸 수 있습니다</span>
                 </div>
@@ -72,10 +74,12 @@
               <div class="community-card">
                 <div class="community-card-head">
                   <span>
-                    <img class="user-photo" src="../../assets/user-account.png" >
+                    <!-- 여기 안됨 -->
+                    <img class="user-photo" v-if="review.user.profile_image === `${SERVER_URL}null`" src='@/assets/user-account.png' alt="">
+                    <img class="user-photo" v-else :src="`${SERVER_URL}`+review.user.profile_image" alt="">
                   </span>
                   <div class="commu-write">
-                    <span class="commu-writer">제목: {{review.title}}</span><br/>
+                    <span class="commu-writer">제목: {{review.profile_image}} {{review.title}}</span><br/>
                     <span class="commu-writedate">작성일: <span class="commu-writedate">작성일: {{review.created_at.substr(0,10)}} / {{review.created_at.substr(11,8)}}</span></span>
                     <br>
                     <span class="commu-rank">평점: {{review.rank}}%</span>
@@ -111,12 +115,15 @@
 
 <script>
 import axios from 'axios'
-import {mapGetters} from 'vuex'
+import {mapState, mapGetters} from 'vuex'
+import SERVER from '@/api/server.js'
+
 
 export default {
   name: 'Moviedetail',
   data: function () {
     return {
+      SERVER_URL: SERVER.URL,
       movie: null,
       username: '',
       reviews: null,
@@ -211,8 +218,12 @@ export default {
   computed: {
     ...mapGetters([
       'getusernamei', 
-    ])
+    ]),
+    ...mapState([
+      'profile_image',
+    ]),
   },
+    
 }
 </script>
 <style scoped>

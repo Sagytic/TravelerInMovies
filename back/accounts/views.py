@@ -100,6 +100,7 @@ def profile(request):
 
         
         serializer = UserProfileSerializer(request.user, data=request.data)
+        print('here!')
         if serializer.is_valid(raise_exception=True):
             print('serializer is valid!')
             serializer.save(profile_image=profile_image, background_image=background_image)
