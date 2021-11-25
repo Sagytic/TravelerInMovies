@@ -85,3 +85,8 @@ export default {
   // }
 }
 </script>
+<style scoped>
+section {
+  min-height:900px;
+}
+</style>
