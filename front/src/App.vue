@@ -33,7 +33,7 @@
             </div>
             </b-navbar>
     </div>
-
+    <div></div>
     <!-- 로그인이 되었을 때 물리적인 렌더링도 변경 -->
     <router-view @login="isLogin=true"/>
   </div>
